@@ -1,9 +1,6 @@
 package dev.abhisek.server.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.List;
 
@@ -20,7 +17,7 @@ public class User {
 
     @OneToMany
     private List<Cart> carts;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Address> addresses;
 
     @OneToMany(mappedBy = "user")

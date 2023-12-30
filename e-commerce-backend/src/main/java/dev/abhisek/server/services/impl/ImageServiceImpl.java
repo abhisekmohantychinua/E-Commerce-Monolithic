@@ -27,6 +27,12 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    public void removeImage(String name) {
+        File file = new File(PATH + File.separator + name);
+        file.delete();
+    }
+
+    @Override
     public InputStream fetchImage(String name) throws FileNotFoundException {
         InputStream inputStream = new FileInputStream(PATH + File.separator + name);
         return inputStream;

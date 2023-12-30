@@ -9,5 +9,7 @@ import java.io.InputStream;
 public interface ImageService {
     String saveImage(MultipartFile image) throws IOException;
 
+    void removeImage(String name);
+
     InputStream fetchImage(String url) throws FileNotFoundException;
 }

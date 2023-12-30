@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto getUserById(String id) {
         User user = userRepository
-                .findUserById(id)
+                .findById(id)
                 .orElseThrow(() -> new RuntimeException("User Not found"));
         return userToDto(user);
     }
@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto updateUserInformation(UserRequestDto requestDto, String id) {
         User user = userRepository
-                .findUserById(id)
+                .findById(id)
                 .orElseThrow(() -> new RuntimeException("User Not found"));
         user.setName(requestDto.name());
         user.setEmail(requestDto.email());
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Address> getAllUserAddress(String id) {
         User user = userRepository
-                .findUserById(id)
+                .findById(id)
                 .orElseThrow(() -> new RuntimeException("User Not found"));
         return user.getAddresses();
     }
@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Address getUserAddressById(String id, int addId) {
         User user = userRepository
-                .findUserById(id)
+                .findById(id)
                 .orElseThrow(() -> new RuntimeException("User Not found"));
         return user
                 .getAddresses()
@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto addUserAddress(String id, AddressRequestDto requestDto) {
         User user = userRepository
-                .findUserById(id)
+                .findById(id)
                 .orElseThrow(() -> new RuntimeException("User Not found"));
 
         Address address = new Address();
@@ -120,11 +120,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUserAddress(String id, int addId) {
         User user = userRepository
-                .findUserById(id)
+                .findById(id)
                 .orElseThrow(() -> new RuntimeException("User Not found"));
         user.setAddresses(user
                 .getAddresses()
-                .stream().filter((address -> address.getId() != addId))
+                .stream().filter(address -> address.getId() != addId)
                 .collect(Collectors.toList())
         );
 

@@ -56,7 +56,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponseDto getProductById(String id) {
         Product product = productRepository
-                .findProductById(id)
+                .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Requested Product Not Found On Server."));
         return productToDto(product);
     }
@@ -73,7 +73,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductImageResponseDto getImageById(String id) throws FileNotFoundException {
         Product product = productRepository
-                .findProductById(id)
+                .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Requested Product Not Found On Server."));
         InputStream inputStream = imageService.fetchImage(product.getImgUrl());
         String mediaType = product.getImgUrl().contains(".jpg") || product.getImgUrl().contains(".jpeg") ? MediaType.IMAGE_JPEG_VALUE : MediaType.IMAGE_PNG_VALUE;

@@ -12,13 +12,13 @@ public class Order {
     private String id;
     @ManyToOne
     private User user;
-    @OneToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Product product;
     private Integer quantity;
     @CreatedDate
     private Date createdAt;
     private boolean isDelivered;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private Address address;
 
     public Order() {

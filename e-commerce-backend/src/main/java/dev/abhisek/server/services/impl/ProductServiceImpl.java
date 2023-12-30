@@ -82,7 +82,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void removeProduct(String id) {
-        productRepository.deleteById(id);
+        Product product = productRepository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Requested Product Not Found On Server."));
+        imageService.removeImage(product.getImgUrl());
+        productRepository.delete(product);
     }
 
 

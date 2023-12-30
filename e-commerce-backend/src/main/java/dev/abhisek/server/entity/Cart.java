@@ -1,7 +1,6 @@
 package dev.abhisek.server.entity;
 
 import jakarta.persistence.*;
-import jdk.jfr.Enabled;
 
 @Entity
 @Table(name = "carts")
@@ -9,7 +8,7 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private Product product;
     private Integer quantity;
 

@@ -13,6 +13,8 @@ public interface ProductService {
 
     ProductResponseDto getProductById(String id);
 
+    List<ProductResponseDto> getAllProduct(Integer pageNo);
+
     List<ProductResponseDto> getProductsByCategory(String category);
 
     ProductImageResponseDto getImageById(String id) throws FileNotFoundException;

@@ -9,6 +9,9 @@ import dev.abhisek.server.exceptions.ResourceNotFoundException;
 import dev.abhisek.server.repository.ProductRepository;
 import dev.abhisek.server.services.ImageService;
 import dev.abhisek.server.services.ProductService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +62,18 @@ public class ProductServiceImpl implements ProductService {
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Requested Product Not Found On Server."));
         return productToDto(product);
+    }
+
+    @Override
+    public List<ProductResponseDto> getAllProduct(Integer pageNo) {
+        Pageable pageable = PageRequest.of(pageNo, 6);
+        Page<Product> productPage = productRepository.findAll(pageable);
+        List<Product> products = productPage.getContent();
+
+        return products
+                .stream()
+                .map(this::productToDto)
+                .toList();
     }
 
     @Override

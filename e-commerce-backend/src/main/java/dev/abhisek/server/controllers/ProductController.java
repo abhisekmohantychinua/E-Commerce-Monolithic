@@ -37,6 +37,11 @@ public class ProductController {
                 .body(responseDto);
     }
 
+    @GetMapping
+    public ResponseEntity<List<ProductResponseDto>> getAllProduct(@RequestParam Integer pageNo) {
+        return ResponseEntity.ok(productService.getAllProduct(pageNo));
+    }
+
     @GetMapping("{id}")
     public ResponseEntity<ProductResponseDto> findProductById(@PathVariable String id) {
         return ResponseEntity.ok(productService.getProductById(id));

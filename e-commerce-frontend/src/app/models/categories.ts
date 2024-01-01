@@ -1,0 +1,3 @@
+export enum Categories {
+  ELECTRONICS, FASHION, BEAUTY, GROCERY, ACCESSORIES
+}

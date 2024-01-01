@@ -1,0 +1,33 @@
+<mat-card class="w-[300px] max-h-[500px] mt-1 mb-3">
+
+  <img mat-card-image [src]="environment.apiUrl+'/products/'+product?.id+'/image'" [alt]="product?.name"
+       class="w-auto max-h-[280px] p-1">
+  <mat-divider/>
+  <mat-card-content>
+    <div class="flex justify-between items-baseline">
+      <span>
+        <mat-card-title>
+        {{ product?.name }}
+      </mat-card-title>
+    <mat-card-subtitle>
+      {{ product?.category }}
+    </mat-card-subtitle>
+      </span>
+
+      <p class="text-xl font-bold">
+        &#8377;{{ product?.price }}
+      </p>
+    </div>
+
+    <p class="text-base">
+      Available: {{ product?.quantity }}
+    </p>
+  </mat-card-content>
+  <mat-card-actions class="flex justify-around items-center">
+    <button mat-flat-button color="accent">
+      <mat-icon>add_shopping_cart</mat-icon>
+      Add to Cart
+    </button>
+    <button mat-flat-button color="primary">Purchase Now</button>
+  </mat-card-actions>
+</mat-card>

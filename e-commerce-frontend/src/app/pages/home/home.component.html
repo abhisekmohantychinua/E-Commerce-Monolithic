@@ -1,0 +1,30 @@
+<div class="flex flex-col md:grid md:grid-cols-4">
+  <div class="md:col-span-1 md:border-e border-b flex flex-col px-4 py-2">
+    <h1 class="font-bold text-xl">Categories</h1>
+    @for (category of categories; track $index) {
+      <mat-checkbox [value]="category" (click)="selectFilter($index)"
+                    [checked]="selectedIndex===$index"
+      >
+        {{ category }}
+      </mat-checkbox>
+    }
+    <button (click)="clearFilter()" [disabled]="selectedIndex<0" color="warn" mat-flat-button>
+      Clear
+    </button>
+  </div>
+  <div class="md:col-span-3">
+    <div class="flex flex-wrap items-center justify-around gap-1">
+      @if (products.length == 0) {
+        <h1 class="font-semibold text-xl">Nothing to show....</h1>
+      }
+      @for (product of products; track $index) {
+        <app-product-card [product]="product"/>
+      }
+    </div>
+    @if (pageNo >= 0) {
+      <p (click)="loadMoreProduct()" class="cursor-pointer text-center text-blue-700 hover:underline ">
+        Show more....
+      </p>
+    }
+  </div>
+</div>

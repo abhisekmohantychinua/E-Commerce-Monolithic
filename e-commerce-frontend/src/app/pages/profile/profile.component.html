@@ -3,7 +3,7 @@
     <img [alt]="user?.name" src="/assets/default-profile.png">
   </div>
   <table class="mx-auto table table-auto border border-collapse">
-    <caption class="caption-bottom text-sm">
+    <caption class="caption-bottom text-xs">
       User Information
     </caption>
     <tbody>
@@ -27,9 +27,9 @@
       <th class="border p-2 text-start">Role</th>
       <td class="border p-2 text-start">{{ user?.role }}</td>
     </tr>
-
     </tbody>
   </table>
+  <button (click)="logout()" class="my-2 mx-auto" color="warn" mat-button>Logout</button>
   <mat-divider/>
   <div class="w-full flex flex-wrap justify-around items-center space-x-2 m-2">
     @for (address of user?.addresses; track address.id) {

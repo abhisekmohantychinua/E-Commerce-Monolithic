@@ -1,1 +1,36 @@
-<p>orders works!</p>
+<mat-accordion>
+  @for (order of userOrders; track order.id) {
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ order.product?.name }}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{ order.status }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="w-4/5 mx-auto border-x grid grid-cols-5 grid-rows-2 px-2">
+        <img [src]="environment.apiUrl+'/products/'+order.product?.id+'/image'" alt=""
+             class="col-span-1 row-span-1 border-e border-b">
+        <div class="col-span-4 row-span-1 text-start px-4 py-2">
+          <p class="text-lg font-semibold">{{ order.product?.name }}</p>
+          <p class="text-sm">{{ order.product?.category }}</p>
+          <p class="text-xl ms-2 font-bold">&#8377;{{ order.product?.price }}</p>
+          <p class="text-xs ms-2">x {{ order.quantity }}</p>
+          <mat-divider></mat-divider>
+          <p class="text-2xl font-bold">&#8377;{{ order.price }}</p>
+        </div>
+        <div class="row-span-1 col-span-2 p-5 border rounded-lg">
+          <p class="font-semibold">{{ order.address?.address }}</p>
+          <p>{{ order.address?.city }},{{ order.address?.zip }}</p>
+          <p class="font-medium">{{ order.address?.phone }}</p>
+        </div>
+        <div class="row-span-1 col-span-1 p-2 flex flex-col items-center justify-around">
+          <button mat-button [color]="order.status==='DELIVERED'?'primary':'warn'">{{ order.status }}</button>
+          <button mat-raised-button color="primary" [disabled]="order.status==='DELIVERED'">Delivered</button>
+          <button mat-flat-button color="warn" [disabled]="order.status==='DELIVERED'">Cancel</button>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  }
+</mat-accordion>

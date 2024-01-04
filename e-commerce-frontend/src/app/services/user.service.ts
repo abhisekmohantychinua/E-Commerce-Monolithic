@@ -33,4 +33,10 @@ export class UserService {
     }
     return null
   }
+
+  logout() {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.clear();
+    }
+  }
 }

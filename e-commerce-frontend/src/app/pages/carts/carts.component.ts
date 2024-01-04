@@ -6,7 +6,6 @@ import {CartService} from "../../services/cart.service";
 import {CartResponse} from "../../models/cart-response";
 import {CartCardComponent} from "../../components/cart-card/cart-card.component";
 import {UserService} from "../../services/user.service";
-import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-carts',
@@ -23,7 +22,7 @@ import {Router} from "@angular/router";
 export class CartsComponent implements OnInit {
   userCarts: CartResponse[] = []
 
-  constructor(private cartService: CartService, private userService: UserService, private router: Router) {
+  constructor(private cartService: CartService, private userService: UserService) {
   }
 
   ngOnInit(): void {
@@ -32,8 +31,6 @@ export class CartsComponent implements OnInit {
       this.cartService.getUserCart(user.id).subscribe((data) => {
         this.userCarts = data
       })
-    } else {
-      this.router.navigate(['/login'])
     }
   }
 

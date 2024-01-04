@@ -27,8 +27,13 @@
         </div>
         <div class="row-span-1 col-span-1 p-2 flex flex-col items-center justify-around">
           <button mat-button [color]="order.status==='DELIVERED'?'primary':'warn'">{{ order.status }}</button>
-          <button mat-raised-button color="primary" [disabled]="order.status==='DELIVERED'">Delivered</button>
-          <button mat-flat-button color="warn" [disabled]="order.status==='DELIVERED'">Cancel</button>
+          <button mat-raised-button color="primary" [disabled]="order.status==='DELIVERED'"
+                  (click)="deliverOrder(order.id)">
+            Delivered
+          </button>
+          <button mat-flat-button color="warn" [disabled]="order.status==='DELIVERED'" (click)="deleteOrder(order.id)">
+            Cancel
+          </button>
         </div>
       </div>
     </mat-expansion-panel>

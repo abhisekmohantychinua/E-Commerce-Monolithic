@@ -31,10 +31,33 @@ export class OrdersComponent implements OnInit {
 
   ngOnInit(): void {
     const user = this.userService.fetchUser()
-    if (user && user.id) {
+    if (user?.id) {
       this.orderService.getAllUserOrdersById(user.id).subscribe((data) => {
         this.userOrders = data
       })
     }
+  }
+
+  deleteOrder(id: string | undefined) {
+    const user = this.userService.fetchUser()
+    if (user?.id && id) {
+      this.orderService.cancelOrder(user.id, id).subscribe(data => {
+        this.userOrders = this.userOrders.filter(order => order.id !== id)
+      })
+    }
+  }
+
+  deliverOrder(id: string | undefined) {
+    const user = this.userService.fetchUser()
+    if (user?.id && id) {
+      this.orderService.orderDelivered(user.id, id).subscribe(data => {
+        this.userOrders.forEach(order => {
+          if (order.id === id) {
+            order.status = "DELIVERED"
+          }
+        })
+      })
+    }
+
   }
 }

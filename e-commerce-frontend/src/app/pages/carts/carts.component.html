@@ -1,1 +1,3 @@
-<p>carts works!</p>
+@for (cart of userCarts; track cart.id) {
+  <app-cart-card [cart]="cart"/>
+}

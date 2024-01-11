@@ -13,6 +13,7 @@ import dev.abhisek.server.services.CartService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -104,7 +105,7 @@ public class CartServiceImpl implements CartService {
         userCarts = userCarts
                 .stream()
                 .filter((c) -> !c.getId().equals(cartId))
-                .toList();
+                .collect(Collectors.toList());
         user.setCarts(userCarts);
 
         userRepository.save(user);

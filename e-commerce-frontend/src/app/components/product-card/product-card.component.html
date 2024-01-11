@@ -1,6 +1,7 @@
 <mat-card class="w-[300px] max-h-[500px] mt-1 mb-3">
 
-  <img [alt]="product?.name" [src]="environment.apiUrl+'/products/'+product?.id+'/image'" class="w-auto max-h-[280px] p-1"
+  <img [alt]="product?.name" [src]="environment.apiUrl+'/products/'+product?.id+'/image'"
+       class="w-auto max-h-[280px] p-1"
        mat-card-image>
   <mat-divider/>
   <mat-card-content>
@@ -24,11 +25,11 @@
     </p>
   </mat-card-content>
   <mat-card-actions class="flex justify-around items-center">
-    <button color="accent" mat-flat-button>
+    <button (click)="addCart(product?.id)" color="accent" mat-flat-button>
       <mat-icon>add_shopping_cart</mat-icon>
       Add to Cart
     </button>
-    <button color="primary" mat-flat-button>
+    <button (click)="purchase(product?.id)" color="primary" mat-flat-button>
       <mat-icon>flash_on</mat-icon>
       Purchase
     </button>

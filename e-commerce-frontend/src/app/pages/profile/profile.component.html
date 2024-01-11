@@ -1,11 +1,12 @@
+<div class="w-full flex justify-end h-0">
+  <button (click)="logout()" color="warn" mat-button>Logout</button>
+</div>
 <div class="w-4/5 mx-auto">
   <div class="w-1/5 border rounded-full mx-auto m-2">
     <img [alt]="user?.name" src="/assets/default-profile.png">
   </div>
+
   <table class="mx-auto table table-auto border border-collapse">
-    <caption class="caption-bottom text-xs">
-      User Information
-    </caption>
     <tbody>
     <tr>
       <th class="border p-2 text-start">Name</th>
@@ -29,14 +30,14 @@
     </tr>
     </tbody>
   </table>
-  <button (click)="logout()" class="my-2 mx-auto" color="warn" mat-button>Logout</button>
+
   <mat-divider/>
-  <div class="w-full flex flex-wrap justify-around items-center space-x-2 m-2">
+  <div class="w-full flex flex-wrap justify-around items-center gap-0.5 m-2">
     @for (address of user?.addresses; track address.id) {
       <div class="mb-2 p-5 w-1/4 border rounded-lg">
 
         <div class="w-full h-2 flex justify-end items-center">
-          <button mat-icon-button color="warn">
+          <button mat-icon-button color="warn" (click)="deleteAddress(address.id)">
             <mat-icon>delete</mat-icon>
           </button>
         </div>
@@ -45,5 +46,10 @@
         <p class="font-medium">{{ address.phone }}</p>
       </div>
     }
+    <div class="mb-2 p-5 w-1/4 border rounded-lg flex items-center justify-center">
+      <button (click)="addAddress()" mat-fab>
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
   </div>
 </div>

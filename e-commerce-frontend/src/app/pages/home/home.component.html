@@ -18,7 +18,8 @@
         <h1 class="font-semibold text-xl">Nothing to show....</h1>
       }
       @for (product of products; track $index) {
-        <app-product-card [product]="product"/>
+        <app-product-card [product]="product" (cartEmitter)="addProductToCart($event)"
+                          (purchaseEmitter)="openOrderModal($event)"/>
       }
     </div>
     @if (pageNo >= 0) {

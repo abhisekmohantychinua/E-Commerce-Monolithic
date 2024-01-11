@@ -1,0 +1,27 @@
+<h1 class="mx-auto" mat-dialog-title>Provide address details!</h1>
+<form (submit)="onSubmit()" class="mx-auto">
+  <div class="flex flex-col" mat-dialog-content>
+    <mat-form-field class="mx-auto">
+      <mat-label>Address</mat-label>
+      <input [(ngModel)]="address.address" matInput name="address" required>
+    </mat-form-field>
+
+    <mat-form-field class="mx-auto">
+      <mat-label>City</mat-label>
+      <input [(ngModel)]="address.city" matInput name="city" required>
+    </mat-form-field>
+    <mat-form-field class="mx-auto">
+      <mat-label>Phone</mat-label>
+      <input [(ngModel)]="address.phone" matInput name="phone" required>
+    </mat-form-field>
+    <mat-form-field class="mx-auto">
+      <mat-label>Zip</mat-label>
+      <input [(ngModel)]="address.zip" matInput name="zip" required>
+    </mat-form-field>
+
+  </div>
+  <div mat-dialog-actions>
+    <button color="warn" mat-button mat-dialog-close>Cancel</button>
+    <button mat-button type="submit">Ok</button>
+  </div>
+</form>

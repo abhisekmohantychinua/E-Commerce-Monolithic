@@ -35,4 +35,11 @@ export class CartsComponent implements OnInit {
   }
 
 
+  removeCart(cartId: number) {
+    const user = this.userService.fetchUser()
+    if (user?.id && cartId)
+      this.cartService.removeCart(user.id, cartId).subscribe((data) => {
+        this.userCarts = this.userCarts.filter(cart => cart.id != cartId)
+      })
+  }
 }

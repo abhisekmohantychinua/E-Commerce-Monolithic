@@ -11,6 +11,15 @@ export class OrderService {
   constructor(private http: HttpClient) {
   }
 
+  createOrder(id: string, productId: string, quantity: number, addId: number) {
+    return this.http.post<OrderResponse>(`${environment.apiUrl}/user/${id}/orders`, {}, {
+      params: {
+        prodId: productId,
+        quantity: quantity,
+        addId: addId
+      }
+    })
+  }
 
   getAllUserOrdersById(id: string) {
     return this.http.get<OrderResponse[]>(`${environment.apiUrl}/user/${id}/orders`)

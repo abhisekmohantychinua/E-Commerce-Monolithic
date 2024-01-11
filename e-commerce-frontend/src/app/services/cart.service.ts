@@ -12,6 +12,15 @@ export class CartService {
   constructor(private http: HttpClient, private userService: UserService) {
   }
 
+  addProductCart(id: string, prodId: string, quantity: number = 1) {
+    return this.http.post<CartResponse>(`${environment.apiUrl}/user/${id}/cart`, {}, {
+      params: {
+        prodId: prodId,
+        quantity: quantity
+      }
+    })
+  }
+
   getUserCart(id: string) {
     return this.http.get<CartResponse[]>(`${environment.apiUrl}/user/${id}/cart`)
   }
@@ -23,5 +32,9 @@ export class CartService {
         quantity: quantity
       }
     })
+  }
+
+  removeCart(id: string, cartId: number) {
+    return this.http.delete(`${environment.apiUrl}/user/${id}/cart/${cartId}`)
   }
 }

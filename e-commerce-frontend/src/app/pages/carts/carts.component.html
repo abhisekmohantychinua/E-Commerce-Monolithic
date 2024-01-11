@@ -1,3 +1,3 @@
 @for (cart of userCarts; track cart.id) {
-  <app-cart-card [cart]="cart"/>
+  <app-cart-card [cart]="cart" (emitter)="removeCart($event)"/>
 }

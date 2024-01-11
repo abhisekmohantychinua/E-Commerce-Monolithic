@@ -20,11 +20,11 @@
           <mat-icon>add</mat-icon>
         </button>
       </div>
-      <button color="primary" mat-flat-button>
+      <button (click)="purchase()" color="primary" mat-flat-button>
         <mat-icon>flash_on</mat-icon>
         Purchase
       </button>
-      <button color="warn" mat-flat-button>
+      <button (click)="deleteCart(cart?.id)" color="warn" mat-flat-button>
         <mat-icon>delete</mat-icon>
         Remove
       </button>

@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {JsonPipe} from "@angular/common";
 import {environment} from "../../../environments/environment";
 import {MatCardModule} from "@angular/material/card";
@@ -6,6 +6,8 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {CartResponse} from "../../models/cart-response";
 import {CartService} from "../../services/cart.service";
+import {MatDialog} from "@angular/material/dialog";
+import {OrderModalComponent} from "../modals/order-modal/order-modal.component";
 
 @Component({
   selector: 'app-cart-card',
@@ -21,9 +23,10 @@ import {CartService} from "../../services/cart.service";
 })
 export class CartCardComponent {
   @Input({required: true}) cart?: CartResponse;
+  @Output() emitter: EventEmitter<number> = new EventEmitter<number>()
   protected readonly environment = environment;
 
-  constructor(private cartService: CartService) {
+  constructor(private cartService: CartService, private dialog: MatDialog) {
   }
 
   plus() {
@@ -46,5 +49,20 @@ export class CartCardComponent {
         console.log(data)
       })
     }
+  }
+
+  deleteCart(id: number | undefined) {
+    if (id)
+      this.emitter.emit(id)
+  }
+
+  purchase() {
+    if (this.cart?.product?.id)
+      this.dialog.open(OrderModalComponent, {
+        data: {
+          prodId: this.cart.product.id,
+          quantity: this.cart.quantity
+        }
+      })
   }
 }

@@ -4,6 +4,10 @@ import {ProductService} from "../../services/product.service";
 import {ProductResponse} from "../../models/product-response";
 import {MAT_CHECKBOX_DEFAULT_OPTIONS, MatCheckboxDefaultOptions, MatCheckboxModule} from "@angular/material/checkbox";
 import {MatButtonModule} from "@angular/material/button";
+import {CartService} from "../../services/cart.service";
+import {UserService} from "../../services/user.service";
+import {MatDialog} from "@angular/material/dialog";
+import {OrderModalComponent} from "../../components/modals/order-modal/order-modal.component";
 
 @Component({
   selector: 'app-home',
@@ -26,7 +30,7 @@ export class HomeComponent implements OnInit {
   selectedIndex = -1;
 
 
-  constructor(private productService: ProductService) {
+  constructor(private productService: ProductService, private cartService: CartService, private userService: UserService, private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -60,5 +64,22 @@ export class HomeComponent implements OnInit {
     this.pageNo = 0
     this.selectedIndex = -1;
     this.ngOnInit()
+  }
+
+
+  addProductToCart($event: string) {
+    const user = this.userService.fetchUser();
+    if (user?.id)
+      this.cartService.addProductCart(user.id, $event).subscribe((data) => {
+        console.log(data)
+      })
+  }
+
+  openOrderModal(productId: string) {
+    this.dialog.open(OrderModalComponent, {
+      data: {
+        prodId: productId
+      }
+    })
   }
 }

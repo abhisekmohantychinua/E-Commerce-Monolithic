@@ -18,7 +18,7 @@ public class Order {
     @CreatedDate
     private Date createdAt;
     private boolean isDelivered;
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Address address;
 
     public Order() {

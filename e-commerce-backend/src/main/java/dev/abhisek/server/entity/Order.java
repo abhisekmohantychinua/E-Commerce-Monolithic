@@ -1,6 +1,8 @@
 package dev.abhisek.server.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.util.Date;
@@ -8,60 +10,32 @@ import java.util.Date;
 @Entity
 @Table(name = "orders")
 public class Order {
+    @Setter
+    @Getter
     @Id
     private String id;
+    @Setter
+    @Getter
     @ManyToOne
     private User user;
+    @Setter
+    @Getter
     @ManyToOne(fetch = FetchType.EAGER)
     private Product product;
+    @Setter
+    @Getter
     private Integer quantity;
+    @Setter
+    @Getter
     @CreatedDate
     private Date createdAt;
     private boolean isDelivered;
+    @Setter
+    @Getter
     @ManyToOne(fetch = FetchType.EAGER)
     private Address address;
 
     public Order() {
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
     }
 
     public boolean isDelivered() {
@@ -72,11 +46,4 @@ public class Order {
         isDelivered = delivered;
     }
 
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
 }

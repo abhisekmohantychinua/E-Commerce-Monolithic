@@ -2,6 +2,7 @@ package dev.abhisek.server.controllers;
 
 import dev.abhisek.server.dto.CartResponseDto;
 import dev.abhisek.server.services.CartService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,12 +10,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/user/{id}/cart")
+@RequiredArgsConstructor
 public class CartController {
     private final CartService cartService;
-
-    public CartController(CartService cartService) {
-        this.cartService = cartService;
-    }
 
     @PostMapping
     public ResponseEntity<CartResponseDto> addProductToCart(@PathVariable String id,

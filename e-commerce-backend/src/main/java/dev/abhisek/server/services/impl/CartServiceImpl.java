@@ -10,23 +10,19 @@ import dev.abhisek.server.repository.CartRepository;
 import dev.abhisek.server.repository.ProductRepository;
 import dev.abhisek.server.repository.UserRepository;
 import dev.abhisek.server.services.CartService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
+    
     private final CartRepository cartRepository;
     private final UserRepository userRepository;
-
     private final ProductRepository productRepository;
-
-    public CartServiceImpl(CartRepository cartRepository, UserRepository userRepository, ProductRepository productRepository) {
-        this.cartRepository = cartRepository;
-        this.userRepository = userRepository;
-        this.productRepository = productRepository;
-    }
 
     private CartResponseDto toCartResponseDto(Cart cart) {
         ProductResponseDto responseDto = new ProductResponseDto(

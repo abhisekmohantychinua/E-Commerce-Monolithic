@@ -10,6 +10,7 @@ import dev.abhisek.server.exceptions.ResourceNotFoundException;
 import dev.abhisek.server.repository.AddressRepository;
 import dev.abhisek.server.repository.UserRepository;
 import dev.abhisek.server.services.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,14 +18,10 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
-
-    public UserServiceImpl(UserRepository userRepository, AddressRepository addressRepository) {
-        this.userRepository = userRepository;
-        this.addressRepository = addressRepository;
-    }
 
     private UserResponseDto userToDto(User user) {
         return new UserResponseDto(

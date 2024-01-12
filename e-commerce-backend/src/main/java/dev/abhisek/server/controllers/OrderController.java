@@ -3,6 +3,7 @@ package dev.abhisek.server.controllers;
 import dev.abhisek.server.dto.OrderRequestDto;
 import dev.abhisek.server.dto.OrderResponseDto;
 import dev.abhisek.server.services.OrderService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,13 +11,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/user/{id}/orders")
+@RequiredArgsConstructor
 public class OrderController {
 
     private final OrderService orderService;
-
-    public OrderController(OrderService orderService) {
-        this.orderService = orderService;
-    }
 
     @PostMapping
     public ResponseEntity<OrderResponseDto> createOrder(@PathVariable String id,

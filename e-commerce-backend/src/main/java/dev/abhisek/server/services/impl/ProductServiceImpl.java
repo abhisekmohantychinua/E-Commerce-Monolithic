@@ -9,6 +9,7 @@ import dev.abhisek.server.exceptions.ResourceNotFoundException;
 import dev.abhisek.server.repository.ProductRepository;
 import dev.abhisek.server.services.ImageService;
 import dev.abhisek.server.services.ProductService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,14 +23,10 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final ImageService imageService;
-
-    public ProductServiceImpl(ProductRepository productRepository, ImageService imageService) {
-        this.productRepository = productRepository;
-        this.imageService = imageService;
-    }
 
     private ProductResponseDto productToDto(Product product) {
         return new ProductResponseDto(

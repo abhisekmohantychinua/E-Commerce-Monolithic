@@ -15,6 +15,7 @@ import dev.abhisek.server.repository.OrderRepository;
 import dev.abhisek.server.repository.ProductRepository;
 import dev.abhisek.server.repository.UserRepository;
 import dev.abhisek.server.services.OrderService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -22,18 +23,12 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
     private final AddressRepository addressRepository;
-
-    public OrderServiceImpl(UserRepository userRepository, ProductRepository productRepository, OrderRepository orderRepository, AddressRepository addressRepository) {
-        this.userRepository = userRepository;
-        this.productRepository = productRepository;
-        this.orderRepository = orderRepository;
-        this.addressRepository = addressRepository;
-    }
 
     private OrderResponseDto toOrderResponseDto(Order order) {
         ProductResponseDto responseDto = new ProductResponseDto(

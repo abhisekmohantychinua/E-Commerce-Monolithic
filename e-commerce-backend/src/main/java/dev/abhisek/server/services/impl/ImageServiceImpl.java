@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.UUID;
 
 @Service
 public class ImageServiceImpl implements ImageService {
@@ -16,20 +17,25 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public String saveImage(MultipartFile image) throws IOException {
         byte[] bytes = image.getBytes();
-        String name = image.getOriginalFilename();
+        String extension = image.getOriginalFilename().split("\\.")[1];
+        String name = UUID.randomUUID() + "." + extension;
 
         File file = new File(PATH);
         if (!file.exists()) {
             file.mkdir();
         }
+
         Files.copy(image.getInputStream(), Paths.get(PATH + File.separator + name));
+
         return name;
     }
 
     @Override
     public void removeImage(String name) {
         File file = new File(PATH + File.separator + name);
-        file.delete();
+        if (file.exists()) {
+            file.delete();
+        }
     }
 
     @Override

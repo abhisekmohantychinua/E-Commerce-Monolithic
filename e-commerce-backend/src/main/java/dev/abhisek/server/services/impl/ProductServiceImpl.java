@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -62,25 +64,30 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponseDto> getAllProduct(Integer pageNo) {
-        Pageable pageable = PageRequest.of(pageNo, 6);
-        Page<Product> productPage = productRepository.findAll(pageable);
+    public List<ProductResponseDto> getAllProduct(Integer pageNo, Category category, String orderBy) {
+
+        Sort sort;
+        if (Objects.equals(orderBy, "HIGH_TO_LOW")) {
+            sort = Sort.by("price").descending();
+        } else {
+            sort = Sort.by("price").ascending();
+        }
+        Pageable pageable = PageRequest.of(pageNo, 8, sort);
+
+        Page<Product> productPage;
+        if (category != null) {
+            productPage = productRepository.findAllByCategory(category, pageable);
+        } else {
+            productPage = productRepository.findAll(pageable);
+        }
+
         List<Product> products = productPage.getContent();
-
         return products
                 .stream()
                 .map(this::productToDto)
                 .toList();
     }
 
-    @Override
-    public List<ProductResponseDto> getProductsByCategory(String category) {
-        List<Product> products = productRepository.findAllByCategory(Category.valueOf(category));
-        return products
-                .stream()
-                .map(this::productToDto)
-                .toList();
-    }
 
     @Override
     public ProductImageResponseDto getImageById(String id) throws FileNotFoundException {

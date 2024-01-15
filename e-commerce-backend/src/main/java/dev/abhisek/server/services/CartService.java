@@ -1,17 +1,25 @@
 package dev.abhisek.server.services;
 
 import dev.abhisek.server.dto.CartResponseDto;
+import dev.abhisek.server.entity.User;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
 public interface CartService {
-    CartResponseDto addProductToCart(String id, String productId, Integer quantity);
+    @PreAuthorize("hasAuthority('USER')")
+    CartResponseDto addProductToCart(User user, String productId, Integer quantity);
 
-    List<CartResponseDto> getAllCartOfUser(String id);
+    @PreAuthorize("hasAuthority('USER')")
+    List<CartResponseDto> getAllCartOfUser(User user);
 
-    CartResponseDto getUserCartById(String id, Integer cartId);
+    @PreAuthorize("hasAuthority('USER')")
+    CartResponseDto getUserCartById(User user, Integer cartId);
 
-    void removeCart(String id, Integer cartId);
+    @PreAuthorize("hasAuthority('USER')")
+    void removeCart(User user, Integer cartId);
 
-    CartResponseDto updateCartProductQuantity(String id, Integer cartId, Integer quantity);
+    @PreAuthorize("hasAuthority('USER')")
+    CartResponseDto updateCartProductQuantity(User user, Integer cartId, Integer quantity);
+
 }

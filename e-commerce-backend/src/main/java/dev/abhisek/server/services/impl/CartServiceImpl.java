@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
-    
+
     private final CartRepository cartRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
@@ -36,7 +36,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartResponseDto addProductToCart(String id, String productId, Integer quantity) {
+    public CartResponseDto addProductToCart(User user, String productId, Integer quantity) {
         Product product = productRepository
                 .findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Requested Product Not Found On Server."));
@@ -46,10 +46,6 @@ public class CartServiceImpl implements CartService {
         cart.setQuantity(quantity);
         cart = cartRepository.save(cart);
 
-
-        User user = userRepository
-                .findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
 
         List<Cart> carts = user.getCarts();
         carts.add(cart);
@@ -61,10 +57,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public List<CartResponseDto> getAllCartOfUser(String id) {
-        User user = userRepository
-                .findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public List<CartResponseDto> getAllCartOfUser(User user) {
 
         List<Cart> userCarts = user.getCarts();
 
@@ -75,10 +68,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartResponseDto getUserCartById(String id, Integer cartId) {
-        User user = userRepository
-                .findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public CartResponseDto getUserCartById(User user, Integer cartId) {
 
         List<Cart> userCarts = user.getCarts();
 
@@ -92,10 +82,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void removeCart(String id, Integer cartId) {
-        User user = userRepository
-                .findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public void removeCart(User user, Integer cartId) {
 
         List<Cart> userCarts = user.getCarts();
         userCarts = userCarts
@@ -109,7 +96,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartResponseDto updateCartProductQuantity(String id, Integer cartId, Integer quantity) {
+    public CartResponseDto updateCartProductQuantity(User user, Integer cartId, Integer quantity) {
         // Can be more safe after verifying with User
         Cart cart = cartRepository
                 .findById(cartId)

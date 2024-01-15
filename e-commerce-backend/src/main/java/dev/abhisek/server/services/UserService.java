@@ -12,6 +12,10 @@ import java.util.List;
 public interface UserService {
 
     @PreAuthorize("hasAuthority('ADMIN')")
+    List<UserResponseDto> getAllUser();
+
+
+    @PreAuthorize("hasAuthority('ADMIN')")
     UserResponseDto getUserById(String id);
 
     UserResponseDto getAuthUser(User user);

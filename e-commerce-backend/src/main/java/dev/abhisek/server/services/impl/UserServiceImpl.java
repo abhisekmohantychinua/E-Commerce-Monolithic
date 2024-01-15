@@ -37,6 +37,14 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    public List<UserResponseDto> getAllUser() {
+        return userRepository
+                .findAll()
+                .stream().map(this::userToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public UserResponseDto getUserById(String id) {
         User user = userRepository
                 .findById(id)

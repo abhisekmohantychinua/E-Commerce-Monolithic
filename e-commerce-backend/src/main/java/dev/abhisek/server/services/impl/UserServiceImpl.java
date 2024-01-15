@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +27,7 @@ public class UserServiceImpl implements UserService {
                 user.getId(),
                 user.getName(),
                 user.getEmail(),
+                user.getUsername(),
                 user.getPassword(),
                 user.getPhone(),
                 user.getRole().toString(),
@@ -35,19 +35,6 @@ public class UserServiceImpl implements UserService {
         );
     }
 
-    @Override
-    public UserResponseDto createUser(UserRequestDto requestDto) {
-        User user = new User();
-        user.setId(UUID.randomUUID().toString());
-        user.setName(requestDto.name());
-        user.setEmail(requestDto.email());
-        user.setPassword(requestDto.password());
-        user.setPhone(requestDto.phone());
-        user.setRole(Role.valueOf(requestDto.role()));
-        userRepository.save(user);
-
-        return userToDto(user);
-    }
 
     @Override
     public UserResponseDto getUserById(String id) {
@@ -58,7 +45,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto updateUserInformation(UserRequestDto requestDto, String id) {
+    public UserResponseDto getAuthUser(User user) {
+        return userToDto(user);
+    }
+
+    @Override
+    public UserResponseDto updateUserInformationById(UserRequestDto requestDto, String id) {
         User user = userRepository
                 .findById(id)
                 .orElseThrow(() -> new RuntimeException("User Not found"));
@@ -69,6 +61,21 @@ public class UserServiceImpl implements UserService {
         user.setRole(Role.valueOf(requestDto.role()));
         userRepository.save(user);
         return userToDto(user);
+    }
+
+    @Override
+    public UserResponseDto updateAuthUserInformation(User user, UserRequestDto requestDto) {
+        return updateUserInformationById(requestDto, user.getId());
+    }
+
+    @Override
+    public void deleteUserById(String id) {
+        userRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteAuthUser(User user) {
+        deleteUserById(user.getId());
     }
 
     @Override
@@ -80,23 +87,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Address getUserAddressById(String id, int addId) {
-        User user = userRepository
-                .findById(id)
-                .orElseThrow(() -> new RuntimeException("User Not found"));
-        return user
-                .getAddresses()
-                .stream().filter((a) -> a.getId() == addId)
-                .findFirst()
-                .orElseThrow(() -> new ResourceNotFoundException("Requested Address Not Found On Server."));
+    public List<Address> getAllAuthUserAddress(User user) {
+        return user.getAddresses();
     }
 
     @Override
-    public UserResponseDto addUserAddress(String id, AddressRequestDto requestDto) {
-        User user = userRepository
-                .findById(id)
-                .orElseThrow(() -> new RuntimeException("User Not found"));
+    public Address getAddressById(int addId) {
+        return addressRepository
+                .findById(addId)
+                .orElseThrow(() -> new ResourceNotFoundException("Requested address not found on server!!!"));
+    }
 
+
+    @Override
+    public UserResponseDto addUserAddress(User user, AddressRequestDto requestDto) {
         Address address = new Address();
         address.setAddress(requestDto.address());
         address.setCity(requestDto.city());
@@ -115,10 +119,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUserAddress(String id, int addId) {
-        User user = userRepository
-                .findById(id)
-                .orElseThrow(() -> new RuntimeException("User Not found"));
+    public void deleteAddressById(int addId) {
+        addressRepository.deleteById(addId);
+    }
+
+    @Override
+    public void deleteUserAddress(User user, int addId) {
         user.setAddresses(user
                 .getAddresses()
                 .stream().filter(address -> address.getId() != addId)
@@ -126,8 +132,6 @@ public class UserServiceImpl implements UserService {
         );
 
         userRepository.save(user);
-        addressRepository.deleteById(addId);
-
     }
 
 

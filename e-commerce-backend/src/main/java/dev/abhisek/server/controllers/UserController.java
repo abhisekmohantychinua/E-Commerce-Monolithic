@@ -4,9 +4,12 @@ import dev.abhisek.server.dto.AddressRequestDto;
 import dev.abhisek.server.dto.UserRequestDto;
 import dev.abhisek.server.dto.UserResponseDto;
 import dev.abhisek.server.entity.Address;
+import dev.abhisek.server.entity.Role;
+import dev.abhisek.server.entity.User;
 import dev.abhisek.server.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,12 +20,6 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping
-    public ResponseEntity<UserResponseDto> createUser(@RequestBody UserRequestDto requestDto) {
-        return ResponseEntity
-                .accepted()
-                .body(userService.createUser(requestDto));
-    }
 
     @GetMapping("{id}")
     public ResponseEntity<UserResponseDto> getUserById(@PathVariable String id) {
@@ -30,14 +27,42 @@ public class UserController {
                 .ok(userService.getUserById(id));
     }
 
+    @GetMapping
+    public ResponseEntity<UserResponseDto> getAuthUser(@AuthenticationPrincipal User user) {
+        return ResponseEntity
+                .ok(userService.getAuthUser(user));
+    }
+
     @PutMapping("{id}")
     public ResponseEntity<UserResponseDto> updateUser(@RequestBody UserRequestDto requestDto, @PathVariable String id) {
         return ResponseEntity
                 .accepted()
-                .body(userService.updateUserInformation(requestDto, id));
+                .body(userService.updateUserInformationById(requestDto, id));
     }
 
-//    TODO : Delete a user
+    @PutMapping
+    public ResponseEntity<UserResponseDto> updateAuthUser(@RequestBody UserRequestDto requestDto, @AuthenticationPrincipal User user) {
+        return ResponseEntity
+                .accepted()
+                .body(userService.updateAuthUserInformation(user, requestDto));
+    }
+
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteUserById(@PathVariable String id) {
+        userService.deleteUserById(id);
+        return ResponseEntity
+                .noContent()
+                .build();
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAuthUser(@AuthenticationPrincipal User user) {
+        userService.deleteAuthUser(user);
+        return ResponseEntity
+                .noContent()
+                .build();
+    }
 
     @GetMapping("{id}/address")
     public ResponseEntity<List<Address>> getAllUserAddress(@PathVariable String id) {
@@ -45,22 +70,32 @@ public class UserController {
                 .ok(userService.getAllUserAddress(id));
     }
 
-    @GetMapping("{id}/address/{addId}")
-    public ResponseEntity<Address> getUserAddressById(@PathVariable String id, @PathVariable Integer addId) {
+    @GetMapping("address")
+    public ResponseEntity<List<Address>> getAuthUserAddress(@AuthenticationPrincipal User user) {
         return ResponseEntity
-                .ok(userService.getUserAddressById(id, addId));
+                .ok(userService.getAllAuthUserAddress(user));
     }
 
-    @PostMapping("{id}/address")
-    public ResponseEntity<UserResponseDto> addUserAddress(@PathVariable String id, @RequestBody AddressRequestDto requestDto) {
+    @GetMapping("address/{addId}")
+    public ResponseEntity<Address> getAddressById(@PathVariable Integer addId) {
+        return ResponseEntity
+                .ok(userService.getAddressById(addId));
+    }
+
+    @PostMapping("address")
+    public ResponseEntity<UserResponseDto> addUserAddress(@AuthenticationPrincipal User user, @RequestBody AddressRequestDto requestDto) {
         return ResponseEntity
                 .accepted()
-                .body(userService.addUserAddress(id, requestDto));
+                .body(userService.addUserAddress(user, requestDto));
     }
 
-    @DeleteMapping("{id}/address/{addId}")
-    public ResponseEntity<Void> deleteAddress(@PathVariable String id, @PathVariable Integer addId) {
-        userService.deleteUserAddress(id, addId);
+    @DeleteMapping("address/{addId}")
+    public ResponseEntity<Void> deleteAddressById(@AuthenticationPrincipal User user, @PathVariable Integer addId) {
+        if (user.getRole() == Role.ADMIN) {
+            userService.deleteAddressById(addId);
+        } else {
+            userService.deleteUserAddress(user, addId);
+        }
         return ResponseEntity
                 .noContent()
                 .build();

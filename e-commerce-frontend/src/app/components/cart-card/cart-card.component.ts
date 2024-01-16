@@ -44,11 +44,11 @@ export class CartCardComponent {
   }
 
   updateCart() {
-    if (this.cart) {
-      this.cartService.updateUserCartQuantity(this.cart?.id, this.cart?.quantity).subscribe((data) => {
-        console.log(data)
-      })
-    }
+    // if (this.cart) {
+    //   this.cartService.updateUserCartQuantity(this.cart?.id, this.cart?.quantity).subscribe((data) => {
+    //     console.log(data)
+    //   })
+    // }
   }
 
   deleteCart(id: number | undefined) {

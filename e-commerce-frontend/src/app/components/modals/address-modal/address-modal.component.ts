@@ -30,18 +30,25 @@ import {UserService} from "../../../services/user.service";
   styleUrl: './address-modal.component.css'
 })
 export class AddressModalComponent {
-  address: Address = {}
+  address: Address = {
+    id: 0,
+    address: '',
+    city: '',
+    phone: '',
+    zip: ''
+
+  }
 
   constructor(private dialogRef: MatDialogRef<AddressModalComponent>, private userService: UserService) {
   }
 
 
   onSubmit() {
-    const user = this.userService.fetchUser()
-    if (user?.id && this.address)
-      this.userService.addUserAddress(user.id, this.address).subscribe((data) => {
-        this.dialogRef.close();
-        console.log(data)
-      })
+    // const user = this.userService.fetchUser()
+    // if (user?.id && this.address)
+    //   this.userService.addUserAddress(user.id, this.address).subscribe((data) => {
+    //     this.dialogRef.close();
+    //     console.log(data)
+    //   })
   }
 }

@@ -41,14 +41,14 @@ export class OrderModalComponent {
     private orderService: OrderService,
     private userService: UserService
   ) {
-    if (this.data.quantity) {
-      this.quantity = this.data.quantity
-    }
-    const user = this.userService.fetchUser()
-    if (user?.id)
-      this.userService.getAllUserAddress(user.id).subscribe((data) => {
-        this.addresses = data
-      })
+    // if (this.data.quantity) {
+    //   this.quantity = this.data.quantity
+    // }
+    // const user = this.userService.fetchUser()
+    // if (user?.id)
+    //   this.userService.getAllUserAddress(user.id).subscribe((data) => {
+    //     this.addresses = data
+    //   })
   }
 
   plus() {
@@ -61,13 +61,13 @@ export class OrderModalComponent {
   }
 
   createOrder() {
-    const user = this.userService.fetchUser()
-    const address = this.addresses[this.selectedIndex]
-    if (user?.id && address.id)
-      this.orderService.createOrder(user.id, this.data.prodId, this.quantity, address.id).subscribe((data) => {
-        console.log(data)
-        this.dialogRef.close()
-      })
+    // const user = this.userService.fetchUser()
+    // const address = this.addresses[this.selectedIndex]
+    // if (user?.id && address.id)
+    //   this.orderService.createOrder(user.id, this.data.prodId, this.quantity, address.id).subscribe((data) => {
+    //     console.log(data)
+    //     this.dialogRef.close()
+    //   })
   }
 
   select($index: number) {

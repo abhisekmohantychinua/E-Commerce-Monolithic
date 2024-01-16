@@ -7,7 +7,8 @@ import {MatButtonModule} from "@angular/material/button";
 import {CartService} from "../../services/cart.service";
 import {UserService} from "../../services/user.service";
 import {MatDialog} from "@angular/material/dialog";
-import {OrderModalComponent} from "../../components/modals/order-modal/order-modal.component";
+import {KeyValuePipe} from "@angular/common";
+import {Categories} from "../../models/categories";
 
 @Component({
   selector: 'app-home',
@@ -15,7 +16,8 @@ import {OrderModalComponent} from "../../components/modals/order-modal/order-mod
   imports: [
     ProductCardComponent,
     MatCheckboxModule,
-    MatButtonModule
+    MatButtonModule,
+    KeyValuePipe
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -26,22 +28,21 @@ import {OrderModalComponent} from "../../components/modals/order-modal/order-mod
 export class HomeComponent implements OnInit {
   products: ProductResponse[] = []
   pageNo: number = 0;
-  categories: string[] = ["ELECTRONICS", "FASHION", "BEAUTY", "GROCERY", "ACCESSORIES"]
-  selectedIndex = -1;
-
+  selectedCategory?: Categories
+  categories: Categories[] = ["ELECTRONICS", "FASHION", "BEAUTY", "GROCERY", "ACCESSORIES"]
 
   constructor(private productService: ProductService, private cartService: CartService, private userService: UserService, private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
-    this.productService.fetchProductByPageNo().subscribe((data) => {
+    this.productService.getAllProducts().subscribe((data) => {
       this.products = data
     })
   }
 
   loadMoreProduct(): void {
     this.pageNo++;
-    this.productService.fetchProductByPageNo(this.pageNo).subscribe((data) => {
+    this.productService.getAllProducts(this.pageNo).subscribe((data) => {
       this.products = this.products.concat(data);
       if (data.length === 0) {
         this.pageNo = -1
@@ -49,12 +50,11 @@ export class HomeComponent implements OnInit {
     })
   }
 
-
-  selectFilter($index: number) {
-    if (this.selectedIndex != $index) {
-      this.selectedIndex = $index
+  selectFilter(category: Categories) {
+    if (this.selectedCategory != category) {
+      this.selectedCategory = category
       this.pageNo = -1;
-      this.productService.fetchProductByCategory(this.categories[this.selectedIndex]).subscribe((data) => {
+      this.productService.getAllProducts(undefined, category).subscribe((data) => {
         this.products = data
       })
     }
@@ -62,24 +62,9 @@ export class HomeComponent implements OnInit {
 
   clearFilter() {
     this.pageNo = 0
-    this.selectedIndex = -1;
+    this.selectedCategory = undefined;
     this.ngOnInit()
   }
 
 
-  addProductToCart($event: string) {
-    const user = this.userService.fetchUser();
-    if (user?.id)
-      this.cartService.addProductCart(user.id, $event).subscribe((data) => {
-        console.log(data)
-      })
-  }
-
-  openOrderModal(productId: string) {
-    this.dialog.open(OrderModalComponent, {
-      data: {
-        prodId: productId
-      }
-    })
-  }
 }

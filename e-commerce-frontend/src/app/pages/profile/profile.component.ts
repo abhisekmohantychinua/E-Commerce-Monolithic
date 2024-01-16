@@ -29,24 +29,15 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const user = this.userService.fetchUser();
-    if (user?.id)
-      this.userService.getUserByUserId(user.id).subscribe((data) => {
-        this.user = data
-      })
+
   }
 
   logout() {
-    this.userService.logout();
+
   }
 
   deleteAddress(id: number | undefined) {
-    if (this.user?.id && id) {
-      this.userService.deleteAddressById(this.user.id, id).subscribe((data) => {
-        if (this.user?.addresses)
-          this.user.addresses = this.user.addresses.filter(address => address.id != id);
-      })
-    }
+
   }
 
   addAddress() {

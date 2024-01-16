@@ -1,11 +1,12 @@
 import {Address} from "./address";
 
 export interface UserResponse {
-  id?: string,
-  name?: string,
+  id: string,
+  name: string,
   email?: string,
-  password?: string,
-  phone?: string,
-  role?: string,
-  addresses?: Address[]
+  username: string,
+  password: string,
+  phone: string,
+  role: string,
+  addresses: Address[] | null
 }

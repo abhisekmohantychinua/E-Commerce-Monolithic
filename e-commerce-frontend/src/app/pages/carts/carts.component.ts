@@ -26,20 +26,20 @@ export class CartsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const user = this.userService.fetchUser()
-    if (user && user.id) {
-      this.cartService.getUserCart(user.id).subscribe((data) => {
-        this.userCarts = data
-      })
-    }
+    // const user = this.userService.fetchUser()
+    // if (user && user.id) {
+    //   this.cartService.getUserCart(user.id).subscribe((data) => {
+    //     this.userCarts = data
+    //   })
+    // }
   }
 
 
   removeCart(cartId: number) {
-    const user = this.userService.fetchUser()
-    if (user?.id && cartId)
-      this.cartService.removeCart(user.id, cartId).subscribe((data) => {
-        this.userCarts = this.userCarts.filter(cart => cart.id != cartId)
-      })
+    // const user = this.userService.fetchUser()
+    // if (user?.id && cartId)
+    //   this.cartService.removeCart(user.id, cartId).subscribe((data) => {
+    //     this.userCarts = this.userCarts.filter(cart => cart.id != cartId)
+    //   })
   }
 }

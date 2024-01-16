@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
+import {OrderRequest} from "../models/order-request";
 import {environment} from "../../environments/environment";
 import {OrderResponse} from "../models/order-response";
 
@@ -11,25 +12,37 @@ export class OrderService {
   constructor(private http: HttpClient) {
   }
 
-  createOrder(id: string, productId: string, quantity: number, addId: number) {
-    return this.http.post<OrderResponse>(`${environment.apiUrl}/user/${id}/orders`, {}, {
+  createOrder(orderRequest: OrderRequest) {
+    return this.http.post<OrderResponse>(`${environment.apiUrl}/user/orders`, {}, {
       params: {
-        prodId: productId,
-        quantity: quantity,
-        addId: addId
+        prodId: orderRequest.productId,
+        quantity: orderRequest.quantity,
+        addId: orderRequest.addressId
       }
     })
   }
 
-  getAllUserOrdersById(id: string) {
-    return this.http.get<OrderResponse[]>(`${environment.apiUrl}/user/${id}/orders`)
+  getAllUserOrder(id?: string) {
+    let params: HttpParams = new HttpParams()
+    if (id)
+      params = params.set("userId", id)
+
+    return this.http.get<OrderResponse[]>(`${environment.apiUrl}/user/orders`, {params: params})
   }
 
-  orderDelivered(id: string, orderId: string) {
-    return this.http.post(`${environment.apiUrl}/user/${id}/orders/${orderId}/deliver`, {})
+  getAllOrder() {
+    return this.http.get<OrderResponse[]>(`${environment.apiUrl}/user/orders/all`)
   }
 
-  cancelOrder(id: string, orderId: string) {
-    return this.http.delete(`${environment.apiUrl}/user/${id}/orders/${orderId}`)
+  getUserOrderById(orderId: string) {
+    return this.http.get<OrderResponse>(`${environment.apiUrl}/user/orders/${orderId}`)
+  }
+
+  cancelOrder(orderId: string) {
+    return this.http.delete<void>(`${environment.apiUrl}/user/orders/${orderId}`)
+  }
+
+  deliverOrder(orderId: string) {
+    return this.http.post<void>(`${environment.apiUrl}/user/orders/${orderId}/deliver`, {})
   }
 }

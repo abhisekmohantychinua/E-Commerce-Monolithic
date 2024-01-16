@@ -1,57 +1,68 @@
-import {inject, Injectable, PLATFORM_ID} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {UserResponse} from "../models/user-response";
-import {isPlatformBrowser} from "@angular/common";
+import {UserRequest} from "../models/user-request";
 import {Address} from "../models/address";
+import {AddressRequest} from "../models/address-request";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  platformId = inject(PLATFORM_ID)
 
   constructor(private http: HttpClient) {
   }
 
-  getUserByUserId(id: string) {
+  // ADMIN METHODS
+  getAllUser() {
+    return this.http.get<UserResponse[]>(`${environment.apiUrl}/user/all`)
+  }
+
+  getUserById(id: string) {
     return this.http.get<UserResponse>(`${environment.apiUrl}/user/${id}`)
   }
 
-  storeUser(user: UserResponse) {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem("userId", JSON.stringify(user));
-    }
+  updateUser(id: string, userRequest: UserRequest) {
+    return this.http.put<UserResponse>(`${environment.apiUrl}/user/${id}`, userRequest)
   }
 
-  fetchUser(): null | UserResponse {
-    if (isPlatformBrowser(this.platformId)) {
-      const user = localStorage.getItem("userId");
-      if (user) {
-        return JSON.parse(user)
-      }
-    }
-    return null
-  }
-
-  logout() {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.clear();
-    }
-  }
-
-  deleteAddressById(id: string, addId: number) {
-
-    return this.http.delete(`${environment.apiUrl}/user/${id}/address/${addId}`)
-
-  }
-
-  addUserAddress(id: string, address: Address) {
-    return this.http.post(`${environment.apiUrl}/user/${id}/address`, address)
+  deleteUser(id: string) {
+    return this.http.delete<void>(`${environment.apiUrl}/user/${id}`)
   }
 
   getAllUserAddress(id: string) {
     return this.http.get<Address[]>(`${environment.apiUrl}/user/${id}/address`)
+  }
+
+  getAddressById(addId: number) {
+    return this.http.get(`${environment.apiUrl}/user/address/${addId}`)
+  }
+
+  // USER METHODS
+  getAuthUser() {
+    return this.http.get<UserResponse>(`${environment.apiUrl}/user`)
+  }
+
+  updateAuthUser(userRequest: UserRequest) {
+    return this.http.put<UserResponse>(`${environment.apiUrl}/user`, userRequest)
+  }
+
+  deleteAuthUser() {
+    return this.http.delete<void>(`${environment.apiUrl}/user`)
+  }
+
+  getAuthUserAddress() {
+    return this.http.get<Address[]>(`${environment.apiUrl}/user/address`)
+  }
+
+  addAuthUserAddress(addressRequest: AddressRequest) {
+    return this.http.post<UserResponse>(`${environment.apiUrl}/user/address`, addressRequest)
+  }
+
+  // BOTH
+  deleteAddress(addId: number) {
+    return this.http.delete<void>(`${environment.apiUrl}/user/address/${addId}`)
   }
 }

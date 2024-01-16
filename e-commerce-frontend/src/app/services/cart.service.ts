@@ -2,18 +2,17 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {CartResponse} from "../models/cart-response";
-import {UserService} from "./user.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
 
-  constructor(private http: HttpClient, private userService: UserService) {
+  constructor(private http: HttpClient) {
   }
 
-  addProductCart(id: string, prodId: string, quantity: number = 1) {
-    return this.http.post<CartResponse>(`${environment.apiUrl}/user/${id}/cart`, {}, {
+  addProductCart(prodId: string, quantity: number = 1) {
+    return this.http.post<CartResponse>(`${environment.apiUrl}/user/cart`, {}, {
       params: {
         prodId: prodId,
         quantity: quantity
@@ -21,20 +20,23 @@ export class CartService {
     })
   }
 
-  getUserCart(id: string) {
-    return this.http.get<CartResponse[]>(`${environment.apiUrl}/user/${id}/cart`)
+  getAllCartOfUser() {
+    return this.http.get<CartResponse[]>(`${environment.apiUrl}/user/cart`)
   }
 
-  updateUserCartQuantity(cartId: number, quantity: number) {
-    const user = this.userService.fetchUser();
-    return this.http.put(`${environment.apiUrl}/user/${user?.id}/cart/${cartId}`, {}, {
+  getUserCartById(cartId: number) {
+    return this.http.get(`${environment.apiUrl}/user/cart/${cartId}`)
+  }
+
+  updateUserCartProductQuantity(cartId: number, quantity: number) {
+    return this.http.put(`${environment.apiUrl}/user/cart/${cartId}`, {}, {
       params: {
         quantity: quantity
       }
     })
   }
 
-  removeCart(id: string, cartId: number) {
-    return this.http.delete(`${environment.apiUrl}/user/${id}/cart/${cartId}`)
+  removeCart(cartId: number) {
+    return this.http.delete(`${environment.apiUrl}/user/cart/${cartId}`)
   }
 }

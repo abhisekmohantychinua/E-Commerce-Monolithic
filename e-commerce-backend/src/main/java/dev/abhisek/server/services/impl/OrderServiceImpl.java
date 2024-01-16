@@ -13,7 +13,6 @@ import dev.abhisek.server.exceptions.ResourceNotFoundException;
 import dev.abhisek.server.repository.AddressRepository;
 import dev.abhisek.server.repository.OrderRepository;
 import dev.abhisek.server.repository.ProductRepository;
-import dev.abhisek.server.repository.UserRepository;
 import dev.abhisek.server.services.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,11 +20,11 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
-    private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
     private final AddressRepository addressRepository;
@@ -55,17 +54,30 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderResponseDto createOrder(OrderRequestDto requestDto) {
-        User user = userRepository
-                .findById(requestDto.userId())
-                .orElseThrow(() -> new RuntimeException("User not found on server."));
+    public List<OrderResponseDto> getAllOrder() {
+        return orderRepository.findAll()
+                .stream()
+                .map(this::toOrderResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public OrderResponseDto getOrderById(String orderId) {
+        Order order = orderRepository
+                .findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order is not available on server"));
+        return toOrderResponseDto(order);
+    }
+
+    @Override
+    public OrderResponseDto createOrder(User user, OrderRequestDto requestDto) {
 
         Product product = productRepository
                 .findById(requestDto.productId())
                 .orElseThrow(() -> new ResourceNotFoundException("Requested product not found on server."));
 
         Address address = addressRepository
-                .findAddressById(requestDto.addressId())
+                .findById(requestDto.addressId())
                 .orElseThrow(() -> new ResourceNotFoundException("Address is not found on server."));
 
         if (product.getQuantity() < requestDto.quantity()) {
@@ -90,9 +102,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void deliverOrder(String id) {
+    public void deliverOrder(User user, String id) {
         Order order = orderRepository
-                .findById(id)
+                .findByIdAndUser(id, user)
                 .orElseThrow(() -> new ResourceNotFoundException("Order is not available on server"));
 
         if (order.isDelivered()) {
@@ -104,9 +116,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void cancelOrder(String id) {
+    public void cancelOrder(User user, String id) {
         Order order = orderRepository
-                .findById(id)
+                .findByIdAndUser(id, user)
                 .orElseThrow(() -> new ResourceNotFoundException("Order is not available on server"));
 
         if (order.isDelivered()) {
@@ -125,9 +137,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderResponseDto> getAllUserOrder(String userId) {
-        User user = new User();
-        user.setId(userId);
+    public List<OrderResponseDto> getAllUserOrder(User user) {
         List<Order> orders = orderRepository.findAllByUser(user);
 
         return orders
@@ -137,9 +147,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderResponseDto getUserOrderById(String id, String orderId) {
+    public List<OrderResponseDto> getAllUserOrderById(String id) {
         User user = new User();
         user.setId(id);
+
+        return orderRepository.findAllByUser(user)
+                .stream().map(this::toOrderResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public OrderResponseDto getUserOrderById(User user, String orderId) {
         Order order = orderRepository
                 .findByIdAndUser(orderId, user)
                 .orElseThrow(() -> new ResourceNotFoundException("Requested Order not available"));

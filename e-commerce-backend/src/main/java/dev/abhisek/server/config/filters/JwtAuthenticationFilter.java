@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @Component
 @RequiredArgsConstructor
@@ -54,11 +55,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (JwtException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().println("Invalid JWT !!! ");
+            PrintWriter writer = response.getWriter();
+            writer.println("Invalid JWT !!! ");
+            writer.flush();
             filterChain.doFilter(request, response);
         } catch (UsernameNotFoundException e) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            response.getWriter().println(e.getMessage());
+            PrintWriter writer = response.getWriter();
+            writer.println(e.getMessage());
+            writer.flush();
             filterChain.doFilter(request, response);
         }
     }

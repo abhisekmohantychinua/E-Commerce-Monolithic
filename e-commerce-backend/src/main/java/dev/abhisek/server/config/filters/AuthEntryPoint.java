@@ -17,5 +17,6 @@ public class AuthEntryPoint implements AuthenticationEntryPoint {
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         PrintWriter writer = response.getWriter();
         writer.println("Access Denied!! " + authException.getMessage());
+        writer.flush();
     }
 }

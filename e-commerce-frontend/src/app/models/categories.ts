@@ -1,3 +1,1 @@
-export enum Categories {
-  ELECTRONICS, FASHION, BEAUTY, GROCERY, ACCESSORIES
-}
+export type Categories = 'FASHION' | 'GROCERY' | 'ELECTRONICS' | 'BEAUTY' | 'ACCESSORIES';

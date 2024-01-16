@@ -1,5 +1,4 @@
-export interface Address {
-  id: number,
+export interface AddressRequest {
   address: string,
   city: string,
   zip: string,

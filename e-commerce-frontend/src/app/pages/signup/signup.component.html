@@ -1,0 +1,42 @@
+<mat-card class="mx-auto my-10 max-w-md text-center">
+  <h1 class="text-5xl">Signup</h1>
+  <form (submit)="onSubmit()">
+    <mat-card-content>
+      <mat-form-field class="w-full">
+        <mat-label>Name</mat-label>
+        <input [(ngModel)]="userRequest.name" matInput name="name" placeholder="Ex. Robert">
+      </mat-form-field>
+      <mat-form-field class="w-full">
+        <mat-label>Username</mat-label>
+        <input (ngModelChange)="onUsernameChange($event)" [(ngModel)]="userRequest.username" matInput name="username"
+               placeholder="Ex. robert">
+        @if (usernameHint !== '') {
+          <mat-hint>{{ usernameHint }}</mat-hint>
+        }
+      </mat-form-field>
+      <mat-form-field class="w-full">
+        <mat-label>Password</mat-label>
+        <input [(ngModel)]="userRequest.password" matInput name="password" placeholder="*******" type="password">
+      </mat-form-field>
+      <mat-form-field class="w-full">
+        <mat-label>Email</mat-label>
+        <input [(ngModel)]="userRequest.email" matInput name="email" placeholder="Ex. robert@gmail.com" type="email">
+      </mat-form-field>
+      <mat-form-field class="w-full">
+        <mat-label>Phone</mat-label>
+        <input [(ngModel)]="userRequest.phone" matInput name="phone" type="tel">
+      </mat-form-field>
+      <mat-form-field class="w-full">
+        <mat-label>Role</mat-label>
+        <mat-select required>
+          <mat-option>ADMIN</mat-option>
+          <mat-option>USER</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button color="primary" mat-raised-button type="submit">Signup</button>
+      <p class="ms-5 text-blue-400 cursor-pointer hover:underline" routerLink="/signin">already an user? signin</p>
+    </mat-card-actions>
+  </form>
+</mat-card>

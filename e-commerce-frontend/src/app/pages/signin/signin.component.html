@@ -1,0 +1,19 @@
+<mat-card class="mx-auto mt-10 max-w-md text-center">
+  <h1 class="text-5xl">Signin</h1>
+  <form (submit)="onSubmit()">
+    <mat-card-content>
+      <mat-form-field class="w-full">
+        <mat-label>Username</mat-label>
+        <input [(ngModel)]="authRequest.username" matInput name="username" placeholder="Ex. Pizza">
+      </mat-form-field>
+      <mat-form-field class="w-full">
+        <mat-label>Password</mat-label>
+        <input [(ngModel)]="authRequest.password" matInput name="password" placeholder="*******" type="password">
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button color="primary" mat-raised-button type="submit">Signin</button>
+      <p class="ms-5 text-blue-400 cursor-pointer hover:underline" routerLink="/signup">don't have account? signup</p>
+    </mat-card-actions>
+  </form>
+</mat-card>

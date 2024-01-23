@@ -4,5 +4,5 @@ export interface UserRequest {
   username: string,
   password: string,
   phone: string,
-  role: 'USER' | 'ADMIN'
+  role: 'USER' | 'ADMIN' | undefined
 }

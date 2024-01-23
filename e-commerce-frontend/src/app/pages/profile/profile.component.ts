@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {UserService} from "../../services/user.service";
 import {UserResponse} from "../../models/user-response";
 import {MatCardModule} from "@angular/material/card";
@@ -8,6 +8,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatDialog} from "@angular/material/dialog";
 import {AddressModalComponent} from "../../components/modals/address-modal/address-modal.component";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-profile',
@@ -25,19 +26,23 @@ import {AddressModalComponent} from "../../components/modals/address-modal/addre
 export class ProfileComponent implements OnInit {
   user?: UserResponse
 
-  constructor(private userService: UserService, private dialog: MatDialog) {
-  }
+  private authService: AuthService = inject(AuthService)
+  private userService: UserService = inject(UserService)
+  private dialog: MatDialog = inject(MatDialog)
 
   ngOnInit(): void {
-
+    this.userService.getAuthUser().subscribe((data) => {
+      this.user = data
+    })
   }
 
   logout() {
-
+    this.authService.logout();
   }
 
   deleteAddress(id: number | undefined) {
-
+    if (id)
+      this.userService.deleteAddress(id)
   }
 
   addAddress() {

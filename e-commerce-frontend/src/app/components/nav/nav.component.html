@@ -4,16 +4,21 @@
   </button>
   <span>My Store</span>
   <span class="example-spacer"></span>
-  <button mat-icon-button routerLink="/search" matTooltip="Search" matTooltipShowDelay="500" >
+  <button mat-icon-button matTooltip="Search" matTooltipShowDelay="500" routerLink="/search">
     <mat-icon>search</mat-icon>
   </button>
-  <button mat-icon-button routerLink="/carts" matTooltip="Cart" matTooltipShowDelay="500" >
+  <button mat-icon-button matTooltip="Cart" matTooltipShowDelay="500" routerLink="/user/cart">
     <mat-icon>shopping_cart</mat-icon>
   </button>
-  <button mat-icon-button routerLink="/orders" matTooltip="Orders" matTooltipShowDelay="500" >
+  <button mat-icon-button matTooltip="Orders" matTooltipShowDelay="500" routerLink="/user/orders">
     <mat-icon>local_shipping</mat-icon>
   </button>
-  <button mat-icon-button routerLink="/profile" matTooltip="Profile" matTooltipShowDelay="500" >
+  @if (isAdmin === 'ADMIN') {
+    <button mat-icon-button matTooltip="Admin Panel" matTooltipShowDelay="500" routerLink="/admin">
+      <mat-icon>shield_person</mat-icon>
+    </button>
+  }
+  <button mat-icon-button matTooltip="Profile" matTooltipShowDelay="500" routerLink="/user/profile">
     <mat-icon>person</mat-icon>
   </button>
 </mat-toolbar>

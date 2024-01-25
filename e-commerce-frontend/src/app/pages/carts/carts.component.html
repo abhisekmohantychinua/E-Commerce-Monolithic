@@ -1,3 +1,5 @@
-@for (cart of userCarts; track cart.id) {
-  <app-cart-card [cart]="cart" (emitter)="removeCart($event)"/>
-}
+<div class="w-full flex flex-wrap justify-center lg:justify-around gap-x-0.5 gap-y-1">
+  @for (cart of userCarts; track cart.id) {
+    <app-cart-card [cart]="cart" (emitter)="removeCart($event)"/>
+  }
+</div>

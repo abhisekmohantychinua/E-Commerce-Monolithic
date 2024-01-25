@@ -46,7 +46,9 @@ public class CartServiceImpl implements CartService {
         cart.setQuantity(quantity);
         cart = cartRepository.save(cart);
 
-
+        user = userRepository
+                .findById(user.getId())
+                .orElseThrow(() -> new RuntimeException("User Not found"));
         List<Cart> carts = user.getCarts();
         carts.add(cart);
 
@@ -58,9 +60,10 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public List<CartResponseDto> getAllCartOfUser(User user) {
-
+        user = userRepository
+                .findById(user.getId())
+                .orElseThrow(() -> new RuntimeException("User Not found"));
         List<Cart> userCarts = user.getCarts();
-
         return userCarts
                 .stream()
                 .map(this::toCartResponseDto)
@@ -69,9 +72,10 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartResponseDto getUserCartById(User user, Integer cartId) {
-
+        user = userRepository
+                .findById(user.getId())
+                .orElseThrow(() -> new RuntimeException("User Not found"));
         List<Cart> userCarts = user.getCarts();
-
         Cart cart = userCarts
                 .stream()
                 .filter((c) -> c.getId().equals(cartId))
@@ -84,6 +88,9 @@ public class CartServiceImpl implements CartService {
     @Override
     public void removeCart(User user, Integer cartId) {
 
+        user = userRepository
+                .findById(user.getId())
+                .orElseThrow(() -> new RuntimeException("User Not found"));
         List<Cart> userCarts = user.getCarts();
         userCarts = userCarts
                 .stream()
@@ -97,7 +104,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartResponseDto updateCartProductQuantity(User user, Integer cartId, Integer quantity) {
-        // Can be more safe after verifying with User
+
         Cart cart = cartRepository
                 .findById(cartId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cart not found on Server"));

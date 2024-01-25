@@ -1,34 +1,38 @@
-<mat-card class="w-full grid grid-cols-5 mb-2">
-  <div class="col-span-1 object-fill">
-    <img [alt]="cart?.product?.name" [src]="environment.apiUrl+'/products/'+cart?.product?.id+'/image'"
-         class="w-auto h-auto p-1"
+<mat-card class="flex flex-row justify-start items-center">
+  <div class="object-fill">
+    <img [alt]="cart.product.name" [src]="environment.apiUrl+'/products/'+cart.product.id+'/image'"
+         class="w-60 h-auto p-1"
          mat-card-image>
   </div>
-  <mat-card-content class="col-span-3 border-s-2 flex flex-col gap-2 px-4 py-2">
-    <mat-card-title>{{ cart?.product?.name }}</mat-card-title>
-    <mat-card-subtitle>{{ cart?.product?.category }}</mat-card-subtitle>
-    <p class="text-xl font-semibold">&#8377; {{ cart?.product?.price }}</p>
-    <mat-card-actions class="w-full flex justify-between  items-center">
-      <div class="flex items-center justify-evenly space-x-2">
-        <button (click)="minus()" mat-icon-button>
-          <mat-icon>remove</mat-icon>
-        </button>
-        <button class="border rounded-lg py-2 px-8 font-medium">
-          {{ cart?.quantity }}
-        </button>
-        <button (click)="plus()" mat-icon-button>
-          <mat-icon>add</mat-icon>
-        </button>
-      </div>
-      <button (click)="purchase()" color="primary" mat-flat-button>
+
+  <mat-card-content class="border-s-2 flex flex-col gap-2 px-4 py-2">
+    <mat-card-title>{{ cart.product.name }}</mat-card-title>
+    <mat-card-subtitle>{{ cart.product.category }}</mat-card-subtitle>
+    <p class="text-xl font-semibold">&#8377; {{ cart.product.price }}</p>
+    <div class="flex items-center justify-evenly space-x-2">
+      <button (click)="minus()" mat-icon-button>
+        <mat-icon>remove</mat-icon>
+      </button>
+      <button class="border rounded-lg py-2 px-8 font-medium">
+        {{ cart.quantity }}
+      </button>
+      <button (click)="plus()" mat-icon-button>
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+    <mat-divider></mat-divider>
+    <p class="text-xl font-semibold">&#8377; {{ cart.product.price * cart.quantity }}</p>
+
+    <mat-card-actions class="w-full flex justify-between  items-center gap-2 mt-2">
+      <button (click)="purchase()" color="primary" mat-button>
         <mat-icon>flash_on</mat-icon>
         Purchase
       </button>
-      <button (click)="deleteCart(cart?.id)" color="warn" mat-flat-button>
+      <button (click)="deleteCart(cart.id)" color="warn" mat-button>
         <mat-icon>delete</mat-icon>
         Remove
       </button>
-
     </mat-card-actions>
   </mat-card-content>
+
 </mat-card>

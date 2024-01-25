@@ -1,6 +1,6 @@
 <mat-card class="w-[300px] max-h-[500px] mt-1 mb-3">
 
-  <img [alt]="product?.name" [src]="environment.apiUrl+'/products/'+product?.id+'/image'"
+  <img [alt]="product.name" [src]="environment.apiUrl+'/products/'+product.id+'/image'"
        class="w-auto max-h-[280px] p-1"
        mat-card-image>
   <mat-divider/>
@@ -8,28 +8,28 @@
     <div class="flex justify-between items-baseline">
       <span>
         <mat-card-title>
-        {{ product?.name }}
+        {{ product.name }}
       </mat-card-title>
     <mat-card-subtitle>
-      {{ product?.category }}
+      {{ product.category }}
     </mat-card-subtitle>
       </span>
 
       <p class="text-xl font-bold">
-        &#8377;{{ product?.price }}
+        &#8377;{{ product.price }}
       </p>
     </div>
 
     <p class="text-base">
-      Available: {{ product?.quantity }}
+      Available: {{ product.quantity }}
     </p>
   </mat-card-content>
   <mat-card-actions class="flex justify-around items-center">
-    <button (click)="addCart(product?.id)" color="accent" mat-flat-button>
+    <button (click)="addCart(product.id,product.name)" color="accent" mat-flat-button>
       <mat-icon>add_shopping_cart</mat-icon>
       Add to Cart
     </button>
-    <button (click)="purchase(product?.id)" color="primary" mat-flat-button>
+    <button (click)="purchase(product.id)" color="primary" mat-flat-button>
       <mat-icon>flash_on</mat-icon>
       Purchase
     </button>

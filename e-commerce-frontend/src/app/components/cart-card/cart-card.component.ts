@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
 import {JsonPipe} from "@angular/common";
 import {environment} from "../../../environments/environment";
 import {MatCardModule} from "@angular/material/card";
@@ -7,7 +7,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {CartResponse} from "../../models/cart-response";
 import {CartService} from "../../services/cart.service";
 import {MatDialog} from "@angular/material/dialog";
-import {OrderModalComponent} from "../modals/order-modal/order-modal.component";
+import {MatDividerModule} from "@angular/material/divider";
 
 @Component({
   selector: 'app-cart-card',
@@ -16,18 +16,20 @@ import {OrderModalComponent} from "../modals/order-modal/order-modal.component";
     JsonPipe,
     MatCardModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatDividerModule
   ],
   templateUrl: './cart-card.component.html',
   styleUrl: './cart-card.component.css'
 })
 export class CartCardComponent {
-  @Input({required: true}) cart?: CartResponse;
+  @Input({required: true}) cart!: CartResponse;
   @Output() emitter: EventEmitter<number> = new EventEmitter<number>()
   protected readonly environment = environment;
 
-  constructor(private cartService: CartService, private dialog: MatDialog) {
-  }
+  private cartService: CartService = inject(CartService)
+  private dialog: MatDialog = inject(MatDialog)
+
 
   plus() {
     if (this.cart && this.cart?.quantity > 0) {
@@ -44,11 +46,11 @@ export class CartCardComponent {
   }
 
   updateCart() {
-    // if (this.cart) {
-    //   this.cartService.updateUserCartQuantity(this.cart?.id, this.cart?.quantity).subscribe((data) => {
-    //     console.log(data)
-    //   })
-    // }
+    if (this.cart) {
+      this.cartService.updateUserCartProductQuantity(this.cart.id, this.cart.quantity).subscribe((data) => {
+        console.log(data)
+      })
+    }
   }
 
   deleteCart(id: number | undefined) {
@@ -57,12 +59,13 @@ export class CartCardComponent {
   }
 
   purchase() {
-    if (this.cart?.product?.id)
-      this.dialog.open(OrderModalComponent, {
-        data: {
-          prodId: this.cart.product.id,
-          quantity: this.cart.quantity
-        }
-      })
+    // TODO: IMPLEMENT PURCHASE
+    // if (this.cart?.product?.id)
+    //   this.dialog.open(OrderModalComponent, {
+    //     data: {
+    //       prodId: this.cart.product.id,
+    //       quantity: this.cart.quantity
+    //     }
+    //   })
   }
 }

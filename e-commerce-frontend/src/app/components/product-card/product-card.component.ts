@@ -1,10 +1,12 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, inject, Input} from '@angular/core';
 import {MatCardModule} from "@angular/material/card";
 import {MatButtonModule} from "@angular/material/button";
 import {ProductResponse} from "../../models/product-response";
 import {environment} from "../../../environments/environment";
 import {MatIconModule} from "@angular/material/icon";
 import {MatDividerModule} from "@angular/material/divider";
+import {CartService} from "../../services/cart.service";
+import {SnackbarService} from "../../services/util/snackbar.service";
 
 @Component({
   selector: 'app-product-card',
@@ -19,20 +21,26 @@ import {MatDividerModule} from "@angular/material/divider";
   styleUrl: './product-card.component.css'
 })
 export class ProductCardComponent {
-  @Input({required: true}) product?: ProductResponse
-  @Output() cartEmitter: EventEmitter<string> = new EventEmitter<string>()
-  @Output() purchaseEmitter: EventEmitter<string> = new EventEmitter<string>()
+  @Input({required: true}) product!: ProductResponse
   protected readonly environment = environment;
 
+  private cartService: CartService = inject(CartService)
+  private snack: SnackbarService = inject(SnackbarService)
 
-  addCart(productId?: string) {
-    if (productId)
-      this.cartEmitter.emit(productId)
+  addCart(productId: string, name: string) {
+    this.cartService.addProductCart(productId).subscribe({
+      next: (data) => {
+        console.log(data)
+        this.snack.openSnack(`${name} added to cart!!!`)
+      },
+      error: (err) => {
+        console.log(err)
+        this.snack.openSnack(err.error.message as string)
+      }
+    })
   }
 
-  purchase(productId?: string) {
-    if (productId)
-      this.purchaseEmitter.emit(productId)
+  purchase(id: string) {
+    // TODO: IMPLEMENT PURCHASE
   }
-
 }

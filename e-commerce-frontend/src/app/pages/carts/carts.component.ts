@@ -1,11 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {MatInputModule} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {CartService} from "../../services/cart.service";
 import {CartResponse} from "../../models/cart-response";
 import {CartCardComponent} from "../../components/cart-card/cart-card.component";
-import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-carts',
@@ -22,24 +21,18 @@ import {UserService} from "../../services/user.service";
 export class CartsComponent implements OnInit {
   userCarts: CartResponse[] = []
 
-  constructor(private cartService: CartService, private userService: UserService) {
-  }
+  private cartService: CartService = inject(CartService)
 
   ngOnInit(): void {
-    // const user = this.userService.fetchUser()
-    // if (user && user.id) {
-    //   this.cartService.getUserCart(user.id).subscribe((data) => {
-    //     this.userCarts = data
-    //   })
-    // }
+    this.cartService.getAllCartOfUser().subscribe((data) => {
+      this.userCarts = data
+    })
   }
 
 
   removeCart(cartId: number) {
-    // const user = this.userService.fetchUser()
-    // if (user?.id && cartId)
-    //   this.cartService.removeCart(user.id, cartId).subscribe((data) => {
-    //     this.userCarts = this.userCarts.filter(cart => cart.id != cartId)
-    //   })
+    this.cartService.removeCart(cartId).subscribe((data) => {
+      this.userCarts = this.userCarts.filter(cart => cart.id !== cartId);
+    })
   }
 }

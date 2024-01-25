@@ -1,0 +1,42 @@
+<h1 class="mx-5" mat-dialog-title>Add a product</h1>
+<form (ngSubmit)="onSubmit()" class="mx-5 mt-2">
+  <mat-dialog-content>
+    <mat-form-field class="w-full">
+      <mat-label>Name</mat-label>
+      <input [(ngModel)]="productRequest.name" matInput name="name" placeholder="Ex. Ken Star Mixer">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Category</mat-label>
+      <mat-select [(ngModel)]="productRequest.category" name="category">
+        @for (cat of categories; track cat) {
+          <mat-option [value]="cat">{{ cat }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="w-full">
+      <mat-label>Price</mat-label>
+      <input [(ngModel)]="productRequest.price" matInput name="price" placeholder="Ex. 999" type="number">
+    </mat-form-field>
+    <mat-form-field class="w-full">
+      <mat-label>Quantity</mat-label>
+      <input [(ngModel)]="productRequest.quantity" matInput name="quantity" placeholder="Ex. 99" type="number">
+    </mat-form-field>
+    <button (click)="fileInput.click()" mat-raised-button type="button">
+      <mat-icon>
+        upload
+      </mat-icon>
+      Upload
+    </button>
+    <input #fileInput (change)="onFileSelected($event)"
+           accept="image/png, image/gif, image/jpeg" hidden
+           id="file" name="image" type="file">
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button color="warn" mat-dialog-close mat-flat-button>
+      Cancel
+    </button>
+    <button color="primary" mat-raised-button type="submit">
+      Add
+    </button>
+  </mat-dialog-actions>
+</form>

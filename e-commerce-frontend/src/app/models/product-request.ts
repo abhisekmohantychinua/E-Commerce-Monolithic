@@ -1,7 +1,9 @@
+import {Categories} from "./categories";
+
 export interface ProductRequest {
   name: string,
-  category: 'FASHION' | 'GROCERY' | 'ELECTRONICS' | 'BEAUTY' | 'ACCESSORIES',
+  category: Categories | undefined,
   price: number,
   quantity: number,
-  image: File
+  image: File | null
 }

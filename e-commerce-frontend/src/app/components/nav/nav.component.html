@@ -4,6 +4,11 @@
   </button>
   <span>My Store</span>
   <span class="example-spacer"></span>
+  @if (isAdmin === 'ADMIN') {
+    <button mat-icon-button matTooltip="Add Product" matTooltipShowDelay="500" (click)="openAddProductModal()">
+      <mat-icon>add</mat-icon>
+    </button>
+  }
   <button mat-icon-button matTooltip="Search" matTooltipShowDelay="500" routerLink="/search">
     <mat-icon>search</mat-icon>
   </button>

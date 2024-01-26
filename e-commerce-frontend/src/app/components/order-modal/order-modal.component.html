@@ -6,6 +6,33 @@
   </button>
 </div>
 <div mat-dialog-content>
+  <mat-card class="w-[300px] max-h-[500px] mt-1 mb-3">
+
+    <img [alt]="data.product.name" [src]="environment.apiUrl+'/products/'+data.product.id+'/image'"
+         class="w-auto max-h-[280px] p-1"
+         mat-card-image>
+    <mat-divider/>
+    <mat-card-content>
+      <div class="flex justify-between items-baseline">
+      <span>
+        <mat-card-title>
+        {{ data.product.name }}
+      </mat-card-title>
+    <mat-card-subtitle>
+      {{ data.product.category }}
+    </mat-card-subtitle>
+      </span>
+
+        <p class="text-xl font-bold">
+          &#8377;{{ data.product.price }}
+        </p>
+      </div>
+
+      <p class="text-base">
+        Available: {{ data.product.quantity - quantity }}
+      </p>
+    </mat-card-content>
+  </mat-card>
   <div class="flex items-center justify-evenly space-x-2">
     <button (click)="minus()" mat-icon-button>
       <mat-icon>remove</mat-icon>
@@ -17,6 +44,8 @@
       <mat-icon>add</mat-icon>
     </button>
   </div>
+  <mat-divider></mat-divider>
+  <p class="text-xl font-bold">&#8377;{{ data.product.price * quantity }}</p>
   @for (address of addresses; track $index) {
     <div class="mb-2 p-5 w-full border rounded-lg" [ngClass]="$index===selectedIndex?'border-purple-600':''"
          (click)="select($index)">

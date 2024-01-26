@@ -1,0 +1,31 @@
+<mat-card>
+  <mat-card-content>
+    <mat-list>
+
+      <mat-list-item>
+        <mat-icon matListItemAvatar>location_on</mat-icon>
+        <p matListItemTitle>
+          {{ address.address }}
+        </p>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon matListItemAvatar>location_city</mat-icon>
+        <p matListItemTitle>
+          {{ address.city }},{{ address.zip }}
+        </p>
+      </mat-list-item>
+      <mat-list-item class="font-medium items-center">
+        <mat-icon matListItemAvatar>call</mat-icon>
+        <p matListItemTitle>
+          {{ address.phone }}
+        </p>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+  <mat-divider></mat-divider>
+  <mat-card-actions align="end">
+    <button (click)="deleteAddress()" color="warn" mat-icon-button>
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>

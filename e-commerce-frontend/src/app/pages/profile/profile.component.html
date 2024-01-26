@@ -3,53 +3,41 @@
 </div>
 <div class="w-4/5 mx-auto">
   <div class="w-1/5 border rounded-full mx-auto m-2">
-    <img [alt]="user?.name" src="/assets/default-profile.png">
+    <img [alt]="user.name" src="/assets/default-profile.png">
   </div>
 
   <table class="mx-auto table table-auto border border-collapse">
     <tbody>
     <tr>
       <th class="border p-2 text-start">Name</th>
-      <td class="border p-2 text-start">{{ user?.name }}</td>
+      <td class="border p-2 text-start">{{ user.name }}</td>
     </tr>
     <tr>
       <th class="border p-2 text-start">Email</th>
-      <td class="border p-2 text-start">{{ user?.email }}</td>
+      <td class="border p-2 text-start">{{ user.email }}</td>
     </tr>
     <tr>
       <th class="border p-2 text-start">Password</th>
-      <td class="border p-2 text-start">{{ user?.password }}</td>
+      <td class="border p-2 text-start">{{ user.password }}</td>
     </tr>
     <tr>
       <th class="border p-2 text-start">Phone</th>
-      <td class="border p-2 text-start">{{ user?.phone }}</td>
+      <td class="border p-2 text-start">{{ user.phone }}</td>
     </tr>
     <tr>
       <th class="border p-2 text-start">Role</th>
-      <td class="border p-2 text-start">{{ user?.role }}</td>
+      <td class="border p-2 text-start">{{ user.role }}</td>
     </tr>
     </tbody>
   </table>
-
-  <mat-divider/>
-  <div class="w-full flex flex-wrap justify-around items-center gap-0.5 m-2">
-    @for (address of user?.addresses; track address.id) {
-      <div class="mb-2 p-5 w-1/4 border rounded-lg">
-
-        <div class="w-full h-2 flex justify-end items-center">
-          <button mat-icon-button color="warn" (click)="deleteAddress(address.id)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </div>
-        <p class="font-semibold">{{ address.address }}</p>
-        <p>{{ address.city }},{{ address.zip }}</p>
-        <p class="font-medium">{{ address.phone }}</p>
-      </div>
+  <div class="w-full flex flex-wrap justify-center items-center gap-x-2 gap-y-2 m-2">
+    @if (user.addresses) {
+      @for (address of user.addresses; track address.id) {
+        <app-address-card [address]="address" (deleteAddressEmitter)="deleteAddress($event)"/>
+      }
     }
-    <div class="mb-2 p-5 w-1/4 border rounded-lg flex items-center justify-center">
-      <button (click)="addAddress()" mat-fab>
-        <mat-icon>add</mat-icon>
-      </button>
-    </div>
+    <button (click)="addAddress()" mat-fab>
+      <mat-icon>add</mat-icon>
+    </button>
   </div>
 </div>

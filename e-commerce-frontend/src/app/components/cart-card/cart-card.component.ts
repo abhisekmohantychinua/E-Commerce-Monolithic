@@ -8,6 +8,7 @@ import {CartResponse} from "../../models/cart-response";
 import {CartService} from "../../services/cart.service";
 import {MatDialog} from "@angular/material/dialog";
 import {MatDividerModule} from "@angular/material/divider";
+import {OrderModalComponent} from "../order-modal/order-modal.component";
 
 @Component({
   selector: 'app-cart-card',
@@ -59,13 +60,11 @@ export class CartCardComponent {
   }
 
   purchase() {
-    // TODO: IMPLEMENT PURCHASE
-    // if (this.cart?.product?.id)
-    //   this.dialog.open(OrderModalComponent, {
-    //     data: {
-    //       prodId: this.cart.product.id,
-    //       quantity: this.cart.quantity
-    //     }
-    //   })
+    this.dialog.open(OrderModalComponent, {
+      data: {
+        product: this.cart.product,
+        quantity: this.cart.quantity
+      }
+    })
   }
 }

@@ -7,8 +7,10 @@ import {MatMenuModule} from "@angular/material/menu";
 import {MatIconModule} from "@angular/material/icon";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatDialog} from "@angular/material/dialog";
-import {AddressModalComponent} from "../../components/modals/address-modal/address-modal.component";
+import {AddressModalComponent} from "../../components/address-modal/address-modal.component";
 import {AuthService} from "../../services/auth.service";
+import {AddressCardComponent} from "../../components/address-card/address-card.component";
+import {SnackbarService} from "../../services/util/snackbar.service";
 
 @Component({
   selector: 'app-profile',
@@ -18,17 +20,29 @@ import {AuthService} from "../../services/auth.service";
     MatButtonModule,
     MatMenuModule,
     MatIconModule,
-    MatDividerModule
+    MatDividerModule,
+    AddressCardComponent
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit {
-  user?: UserResponse
+  user: UserResponse = {
+    id: '',
+    username: '',
+    phone: '',
+    name: '',
+    addresses: [],
+    email: '',
+    password: '',
+    role: ''
+
+  }
 
   private authService: AuthService = inject(AuthService)
   private userService: UserService = inject(UserService)
   private dialog: MatDialog = inject(MatDialog)
+  private snack: SnackbarService = inject(SnackbarService)
 
   ngOnInit(): void {
     this.userService.getAuthUser().subscribe((data) => {
@@ -40,15 +54,24 @@ export class ProfileComponent implements OnInit {
     this.authService.logout();
   }
 
-  deleteAddress(id: number | undefined) {
-    if (id)
-      this.userService.deleteAddress(id)
+  deleteAddress(id: number) {
+    this.userService.deleteAddress(id).subscribe({
+      next: (data) => {
+        this.user.addresses = this.user.addresses.filter(address => address.id !== id)
+        this.snack.openSnack("Address deleted!!!")
+      },
+      error: (err) => {
+        console.log(err)
+        this.snack.openSnack(err.error.message)
+      }
+    })
   }
 
   addAddress() {
     this.dialog.open(AddressModalComponent, {
-      height: '400px',
-      width: '600px'
+      height: '500px',
+      width: '600px',
+
     })
   }
 }

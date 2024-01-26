@@ -54,7 +54,15 @@ export class AuthService {
 
   getJwt(): string | null {
     if (isPlatformBrowser(this.platformId)) {
-      return localStorage.getItem("token");
+      const jwt = localStorage.getItem("token");
+      if (jwt) {
+        const jwtPayload = jwtDecode(jwt)
+        if (jwtPayload.exp && Date.now() >= jwtPayload.exp * 1000) {
+          localStorage.removeItem("token")
+          return null;
+        } else
+          return jwt;
+      }
     }
     return null;
   }

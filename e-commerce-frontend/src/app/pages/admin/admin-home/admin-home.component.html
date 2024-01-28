@@ -1,0 +1,57 @@
+<div class="flex justify-between items-center my-2 px-4">
+  <mat-form-field appearance="fill" class="mt-2">
+    <mat-label>Search</mat-label>
+    <input (ngModelChange)="changeQuery($event)" [(ngModel)]="query" matInput name="query" placeholder="search">
+    <mat-icon (click)="query=''" matSuffix>close</mat-icon>
+  </mat-form-field>
+  <mat-button-toggle-group (ngModelChange)="changeSearchBy($event)" [(ngModel)]="searchBy" aria-label="Search by">
+    <mat-button-toggle value="id">Id</mat-button-toggle>
+    <mat-button-toggle value="title">Title</mat-button-toggle>
+    <mat-button-toggle value="category">Category</mat-button-toggle>
+  </mat-button-toggle-group>
+</div>
+@if (products.length === 0) {
+  <h1 class="text-xl font-semibold">Nothing to show</h1>
+} @else {
+  <h1 class="text-xl font-semibold">showing results for "{{ query }}", search by "{{ searchBy }}"</h1>
+  <mat-accordion>
+    @for (product of products; track product.id) {
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ product.name }}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{ product.id }}
+            <button mat-button color="primary">
+              {{ product.category }}
+            </button>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-card>
+          <mat-card-actions class="flex items-center" align="end">
+            <button mat-icon-button color="primary">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteProduct(product.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-card-actions>
+          <mat-card-content class="flex flex-col sm:flex-row">
+            <img mat-card-image [src]="environment.apiUrl+'/products/'+product.id+'/image'" alt=""
+                 class="w-auto max-h-[280px] border-e">
+            <mat-divider vertical></mat-divider>
+            <div class="text-start px-4">
+              <p class="text-lg font-semibold">{{ product.id }}</p>
+              <mat-card-title>{{ product.name }}</mat-card-title>
+              <mat-card-subtitle>{{ product.category }}</mat-card-subtitle>
+              <p class="text-2xl font-bold">&#8377;{{ product.price }}</p>
+              <p class="text-lg font-medium">Available: {{ product.quantity }}</p>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </mat-expansion-panel>
+    }
+  </mat-accordion>
+}
+

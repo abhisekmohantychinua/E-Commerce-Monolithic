@@ -13,7 +13,7 @@ export class ProductService {
 
   }
 
-  // ADMIN METHODS
+
   addProduct(formData: FormData) {
     return this.http.post<ProductResponse>(`${environment.apiUrl}/products`, formData)
   }

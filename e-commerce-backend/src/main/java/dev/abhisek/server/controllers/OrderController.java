@@ -2,7 +2,6 @@ package dev.abhisek.server.controllers;
 
 import dev.abhisek.server.dto.OrderRequestDto;
 import dev.abhisek.server.dto.OrderResponseDto;
-import dev.abhisek.server.entity.Role;
 import dev.abhisek.server.entity.User;
 import dev.abhisek.server.services.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -31,26 +30,14 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<OrderResponseDto>> getAllUserOrder(@AuthenticationPrincipal User user, @RequestParam(required = false) String userId) {
-        if (userId != null) {
-            return ResponseEntity.ok(orderService.getAllUserOrderById(userId));
-        }
+    public ResponseEntity<List<OrderResponseDto>> getAllUserOrder(@AuthenticationPrincipal User user) {
         return ResponseEntity.ok(orderService.getAllUserOrder(user));
-    }
-
-    @GetMapping("all")
-    public ResponseEntity<List<OrderResponseDto>> getAllOrders() {
-        return ResponseEntity.ok(orderService.getAllOrder());
     }
 
 
     @GetMapping("{orderId}")
     public ResponseEntity<OrderResponseDto> getUserOrderById(@AuthenticationPrincipal User user, @PathVariable String orderId) {
-        if (user.getRole() == Role.ADMIN) {
-            return ResponseEntity.ok(orderService.getOrderById(orderId));
-        } else {
-            return ResponseEntity.ok(orderService.getUserOrderById(user, orderId));
-        }
+        return ResponseEntity.ok(orderService.getUserOrderById(user, orderId));
     }
 
     @DeleteMapping("{orderId}")

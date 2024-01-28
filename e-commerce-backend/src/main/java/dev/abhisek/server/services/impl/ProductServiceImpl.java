@@ -20,9 +20,8 @@ import org.springframework.stereotype.Service;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +39,14 @@ public class ProductServiceImpl implements ProductService {
         );
     }
 
+    private Category mostMatchingCategory(String query) {
+        List<Category> categories = Arrays.asList(Category.values());
+        return categories.stream()
+                .filter(category -> category.name().toLowerCase().contains(query.toLowerCase()))
+                .findFirst()
+                .orElse(null);
+    }
+
     @Override
     public ProductResponseDto addProduct(ProductRequestDto productRequest) throws IOException {
         Product product = new Product();
@@ -53,6 +60,24 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(product);
 
         return productToDto(product);
+    }
+
+    @Override
+    public List<ProductResponseDto> advanceProductSearch(String query, String searchBy) {
+        List<Product> products = new ArrayList<>();
+        if (searchBy.equalsIgnoreCase("title")) {
+            products = productRepository.findAllByNameContainingIgnoreCase(query);
+        } else if (searchBy.equalsIgnoreCase("id")) {
+            products = productRepository.findAllByIdContainingIgnoreCase(query);
+        } else if (searchBy.equalsIgnoreCase("category")) {
+            Category category = mostMatchingCategory(query);
+            if (category != null)
+                products = productRepository.findAllByCategory(category);
+        }
+        return products
+                .stream()
+                .map(this::productToDto)
+                .collect(Collectors.toList());
     }
 
     @Override

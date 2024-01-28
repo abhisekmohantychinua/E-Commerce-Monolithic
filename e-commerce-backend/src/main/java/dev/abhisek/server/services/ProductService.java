@@ -15,6 +15,9 @@ public interface ProductService {
     @PreAuthorize("hasAuthority('ADMIN')")
     ProductResponseDto addProduct(ProductRequestDto productRequest) throws IOException;
 
+    @PreAuthorize("hasAuthority('ADMIN')")
+    List<ProductResponseDto> advanceProductSearch(String query, String searchBy);
+
     ProductResponseDto getProductById(String id);
 
     List<ProductResponseDto> getAllProduct(Integer pageNo, Category categories, String orderBy);

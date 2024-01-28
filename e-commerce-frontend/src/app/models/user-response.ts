@@ -8,5 +8,5 @@ export interface UserResponse {
   password: string,
   phone: string,
   role: string,
-  addresses: Address[] | null
+  addresses: Address[]
 }

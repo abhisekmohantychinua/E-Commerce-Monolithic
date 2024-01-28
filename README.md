@@ -2,7 +2,8 @@
 
 This is an E Commerce Web application using monolithic architecture.
 
-> [!NOTE] This is not fully commercialized application. Some features are implemented according to developers convenience.
+> [!NOTE] 
+> This is not fully commercialized application. Some features are implemented according to developers convenience.
 
 ## New Features
 

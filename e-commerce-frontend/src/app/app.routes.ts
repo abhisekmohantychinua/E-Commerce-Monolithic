@@ -9,6 +9,9 @@ import {SigninComponent} from "./pages/signin/signin.component";
 import {SignupComponent} from "./pages/signup/signup.component";
 import {noAuthGuard} from "./guards/no-auth.guard";
 import {OrdersComponent} from "./pages/orders/orders.component";
+import {AdminHomeComponent} from "./pages/admin/admin-home/admin-home.component";
+import {AdminUsersComponent} from "./pages/admin/admin-users/admin-users.component";
+import {AdminOrderComponent} from "./pages/admin/admin-order/admin-order.component";
 
 export const routes: Routes = [
   {path: '', component: HomeComponent, pathMatch: "full"},
@@ -26,7 +29,12 @@ export const routes: Routes = [
   }, {
     path: 'admin',
     component: AdminLayoutComponent,
-    children: [],
+    children: [
+      {path: '', component: AdminHomeComponent, pathMatch: "full"},
+      {path: 'users', component: AdminUsersComponent, pathMatch: "full"},
+      {path: 'orders', component: AdminOrderComponent, pathMatch: "full"},
+      // {path: 'address', component: AdminAddressComponent, pathMatch: "full"}
+    ],
     canActivate: [authGuard, adminGuard],
     canActivateChild: [authGuard, adminGuard]
   }

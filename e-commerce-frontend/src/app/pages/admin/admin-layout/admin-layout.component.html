@@ -1,1 +1,17 @@
-<p>admin-layout works!</p>
+<div class="w-full flex items-center border-b-2">
+  <button mat-icon-button routerLink="/admin">
+    <mat-icon>home</mat-icon>
+  </button>
+  <span class="text-2xl font-bold">Admin Panel</span>
+  <span class="example-spacer"></span>
+  <button mat-icon-button matTooltip="User" matTooltipShowDelay="500" routerLink="/admin/users">
+    <mat-icon>person</mat-icon>
+  </button>
+  <button mat-icon-button matTooltip="Orders" matTooltipShowDelay="500" routerLink="/admin/orders">
+    <mat-icon>local_shipping</mat-icon>
+  </button>
+  <button mat-icon-button matTooltip="Address" matTooltipShowDelay="500">
+    <mat-icon>location_on</mat-icon>
+  </button>
+</div>
+<router-outlet></router-outlet>
